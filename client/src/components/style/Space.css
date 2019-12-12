@@ -1,0 +1,16 @@
+.space {
+    width: 10vw;
+    height: 10vw;
+    max-width: 10vh;
+    max-height: 10vh;
+    border: 1px solid black;
+    display: inline-block;
+}
+
+.space.white {
+    background-color: white;
+}
+
+.space.black {
+    background-color: black;
+}
