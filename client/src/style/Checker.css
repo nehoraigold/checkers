@@ -25,6 +25,10 @@
     background-color: red;
 }
 
-.checker.selected {
+.checker.selected, .checker.selected.restricted {
     border: 3px solid blue;
+}
+
+.checker.restricted {
+    border: 3px solid red;
 }

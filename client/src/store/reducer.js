@@ -16,6 +16,7 @@ const initialState = {
     boardState: initializeBoard(),
     currentPlayer: PLAYER_1_COLOR,
     chosenCheckerCoordinate: null,
+    coordinateRestrictions: [],
     score: {
         [PLAYER_1_COLOR]: 0,
         [PLAYER_2_COLOR]: 0
@@ -38,34 +39,46 @@ const chooseSpaceReducer = (state, action) => {
     if (isValid === false) {
         return state;
     }
+    return handleTurnChange(state, action, isValid);
+};
 
+const handleTurnChange = (state, action, isValid) => {
     let boardState = Array.from(state.boardState);
+
     const checker = Object.assign({}, boardState[state.chosenCheckerCoordinate[1]][state.chosenCheckerCoordinate[0]]);
     if (hasReachedEnd(action.coordinate, state.currentPlayer)) {
         checker.isKing = true;
     }
     boardState[state.chosenCheckerCoordinate[1]][state.chosenCheckerCoordinate[0]] = null;
     boardState[action.coordinate[1]][action.coordinate[0]] = checker;
+
     let incrementTurn = true;
+    let nextPlayer = state.currentPlayer;
+    let coordinateRestrictions = [];
+    let chosenCheckerCoordinate = action.coordinate;
+    let turnNumber = state.turnNumber;
+
     const score = Object.assign({}, state.score);
     if (Array.isArray(isValid)) {
         boardState[isValid[1]][isValid[0]] = null;
         score[state.currentPlayer]++;
         incrementTurn = !isJumpPossible(action.coordinate, boardState, state.currentPlayer)
     }
-    const nextPlayer = incrementTurn ?
-        (state.currentPlayer === PLAYER_1_COLOR ? PLAYER_2_COLOR : PLAYER_1_COLOR)
-        : state.currentPlayer;
 
-    const selectableCheckerCoordinates = getCheckerCoordinatesAbleToJump(boardState, nextPlayer);
-    const nextChosenCheckerCoordinate = selectableCheckerCoordinates.length === 0 ? null : Array.from(selectableCheckerCoordinates[0]);
+    if (incrementTurn) {
+        nextPlayer = state.currentPlayer === PLAYER_1_COLOR ? PLAYER_2_COLOR : PLAYER_1_COLOR;
+        coordinateRestrictions = getCheckerCoordinatesAbleToJump(boardState, nextPlayer);
+        chosenCheckerCoordinate = coordinateRestrictions.length === 0 ? null : Array.from(coordinateRestrictions[0]);
+        turnNumber++;
+    }
 
     return Object.assign({}, state, {
-        turnNumber: incrementTurn ? state.turnNumber + 1 : state.turnNumber,
         currentPlayer: nextPlayer,
-        chosenCheckerCoordinate: incrementTurn ? nextChosenCheckerCoordinate : action.coordinate,
+        turnNumber,
+        chosenCheckerCoordinate,
+        coordinateRestrictions,
         boardState,
-        score
+        score,
     });
 };
 
