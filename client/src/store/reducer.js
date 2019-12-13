@@ -35,7 +35,12 @@ const rootReducer = (state = initialState, action) => {
 };
 
 const chooseSpaceReducer = (state, action) => {
-    const isValid = isValidMove(state.chosenCheckerCoordinate, action.coordinate, state.boardState, state.currentPlayer);
+    const isValid = isValidMove(
+        state.chosenCheckerCoordinate,
+        action.coordinate,
+        state.boardState,
+        state.currentPlayer,
+        state.coordinateRestrictions.length > 0);
     if (isValid === false) {
         return state;
     }

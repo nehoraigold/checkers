@@ -22,7 +22,7 @@ export function initializeBoard() {
         .map((el, i) => createRow(i < 3 ? PLAYER_1_COLOR : i > 4 ? PLAYER_2_COLOR : null, i));
 }
 
-export function isValidMove(checkerCoordinate, spaceCoordinate, board, player) {
+export function isValidMove(checkerCoordinate, spaceCoordinate, board, player, hasRestrictions) {
     if (!isValidSpace(spaceCoordinate, board)) {
         return false;
     }
@@ -31,7 +31,7 @@ export function isValidMove(checkerCoordinate, spaceCoordinate, board, player) {
         return false;
     }
     if (isInImmediateVicinity(checkerCoordinate, spaceCoordinate)) {
-        return true;
+        return !hasRestrictions
     }
     const enemyChecker = skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, player);
     if (enemyChecker && enemyChecker.length > 0) {
