@@ -26,8 +26,8 @@ export function isValidMove(checkerCoordinate, spaceCoordinate, board, player) {
     if (!isValidSpace(spaceCoordinate, board)) {
         return false;
     }
-    const playerDirection = getPlayerDirection(player);
-    if (!isCheckerKing(checkerCoordinate, board) && !isForwardMove(checkerCoordinate, spaceCoordinate, playerDirection)) {
+    if (!isCheckerKing(checkerCoordinate, board) &&
+        !isForwardMove(checkerCoordinate, spaceCoordinate, getPlayerDirection(player))) {
         return false;
     }
     if (isInImmediateVicinity(checkerCoordinate, spaceCoordinate)) {
@@ -35,7 +35,6 @@ export function isValidMove(checkerCoordinate, spaceCoordinate, board, player) {
     }
     const enemyChecker = skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, player);
     if (enemyChecker && enemyChecker.length > 0) {
-        console.log("Enemy checker:", enemyChecker);
         return enemyChecker;
     }
     return false;
@@ -46,27 +45,28 @@ export function hasReachedEnd(checkerCoordinate, player) {
 }
 
 export function isJumpPossible(checkerCoordinate, board, player) {
-    console.log("BOARD FROM ISJUMPPOSSIBLE", board);
-    const direction = getPlayerDirection(player);
-    const x = checkerCoordinate[0];
-    const y = checkerCoordinate[1];
-    const possibleSpaces = [
-        [x + 2, y + 2],
-        [x + 2, y - 2],
-        [x - 2, y - 2],
-        [x - 2, y + 2]
-    ];
-    const anySkips = possibleSpaces.map(spaceCoordinate => {
-        console.log(spaceCoordinate);
-        if (!isValidSpace(spaceCoordinate, board) ||
-            (!isCheckerKing(checkerCoordinate, board) &&
-            !isForwardMove(checkerCoordinate, spaceCoordinate, direction))) {
-            return false;
-        }
-        return skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, player).length !== 0;
+    return getPossibleJumpSpaces(checkerCoordinate).some(spaceCoordinate => {
+            if (!isValidSpace(spaceCoordinate, board) ||
+                (!isCheckerKing(checkerCoordinate, board) &&
+                !isForwardMove(checkerCoordinate, spaceCoordinate, getPlayerDirection(player)))) {
+                return false;
+            }
+            return skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, player).length !== 0;
+        });
+}
+
+export function getCheckerCoordinatesAbleToJump(board, player) {
+    const checkersAbleToJump = [];
+    board.forEach((row, y) => {
+        row.forEach((checker, x) => {
+            if (checker !== null && checker.color === player &&
+                isJumpPossible([x, y], board, player)) {
+                checkersAbleToJump.push([x, y]);
+            }
+        });
     });
-    console.log(anySkips);
-    return anySkips.some(el => el === true);
+    console.log(checkersAbleToJump);
+    return checkersAbleToJump;
 }
 //endregion
 
@@ -83,6 +83,17 @@ function getPlayerDirection(player) {
     return  player === PLAYER_1_COLOR ? PLAYER_1_DIRECTION : PLAYER_2_DIRECTION;
 }
 
+function getPossibleJumpSpaces(coordinate) {
+    const x = coordinate[0];
+    const y = coordinate[1];
+    return [
+        [x + 2, y + 2],
+        [x + 2, y - 2],
+        [x - 2, y - 2],
+        [x - 2, y + 2]
+    ];
+}
+
 function isInImmediateVicinity(checkerCoordinate, spaceCoordinate) {
     const xValue = checkerCoordinate[0];
     const yValue = checkerCoordinate[1];
@@ -96,15 +107,15 @@ function skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, player
     if (enemyCheckerX % 1 !== 0 || enemyCheckerY % 1 !== 0) {
         return [];
     }
-    const enemyCheckerLocation = board[enemyCheckerY][enemyCheckerX];
-    if (enemyCheckerLocation && enemyCheckerLocation !== playerColor) {
+    const skippedChecker = board[enemyCheckerY][enemyCheckerX];
+    if (skippedChecker && skippedChecker.color !== playerColor) {
+        console.log(skippedChecker.color, "enemy checker", [enemyCheckerX, enemyCheckerY]);
         return [enemyCheckerX, enemyCheckerY];
     }
     return [];
 }
 
 function isValidSpace(spaceCoordinate, board) {
-    console.log("IS", spaceCoordinate, "WITHIN BOUNDS", !isOutOfBounds(spaceCoordinate))
     return !isOutOfBounds(spaceCoordinate)
         && isSpaceFree(spaceCoordinate, board)
         && isRightColoredSpace(spaceCoordinate);

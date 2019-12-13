@@ -23,9 +23,12 @@ const Checker = ({ color, isKing, coordinate, chooseChecker, isCheckerSelectable
 
 const mapStateToProps = (state, ownProps) => {
     const checker = state.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]];
+    const isSelected = state.chosenCheckerCoordinate !== null
+        && state.chosenCheckerCoordinate[0] === ownProps.coordinate[0]
+        && state.chosenCheckerCoordinate[1] === ownProps.constructor[1];
     return {
         isCheckerSelectable: state.currentPlayer === checker.color,
-        isCheckerSelected: state.chosenCheckerCoordinate !== null && state.chosenCheckerCoordinate === ownProps.coordinate,
+        isCheckerSelected: isSelected,
         color: checker.color,
         isKing: checker.isKing
     }
