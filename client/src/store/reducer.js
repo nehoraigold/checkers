@@ -1,7 +1,7 @@
 //region imports
 import { CHOOSE_SPACE, CHOOSE_CHECKER } from "../utils/constants";
 import { PLAYER_1_COLOR, PLAYER_2_COLOR } from "../utils/constants";
-import { initializeBoard, isValidMove, hasReachedEnd } from "../utils/gameutils"
+import { initializeBoard, isValidMove, hasReachedEnd, isJumpPossible } from "../utils/gameutils"
 
 //endregion
 
@@ -44,6 +44,7 @@ const chooseSpaceReducer = (state, action) => {
     if (Array.isArray(isValid)) {
         boardState[isValid[1]][isValid[0]] = null;
         score[state.currentPlayer]++;
+        incrementTurn = !isJumpPossible(action.coordinate, boardState, state.currentPlayer)
     }
     return Object.assign({}, state, {
         turnNumber: incrementTurn ? state.turnNumber + 1 : state.turnNumber,

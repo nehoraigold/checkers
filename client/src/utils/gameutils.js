@@ -10,6 +10,7 @@ import {
 
 //endregion
 
+//region exported functions
 export function initializeBoard() {
     const createRow = (color, offset) =>
         Array(NUMBER_OF_COLUMNS)
@@ -25,7 +26,7 @@ export function isValidMove(checkerCoordinate, spaceCoordinate, board, player) {
     if (!isValidSpace(spaceCoordinate, board)) {
         return false;
     }
-    const playerDirection = player === PLAYER_1_COLOR ? PLAYER_1_DIRECTION : PLAYER_2_DIRECTION;
+    const playerDirection = getPlayerDirection(player);
     if (!isCheckerKing(checkerCoordinate, board) && !isForwardMove(checkerCoordinate, spaceCoordinate, playerDirection)) {
         return false;
     }
@@ -44,16 +45,42 @@ export function hasReachedEnd(checkerCoordinate, player) {
     return checkerCoordinate[1] === (player === PLAYER_1_COLOR ? NUMBER_OF_ROWS - 1 : 0);
 }
 
+export function isJumpPossible(checkerCoordinate, board, player) {
+    console.log("BOARD FROM ISJUMPPOSSIBLE", board);
+    const direction = getPlayerDirection(player);
+    const x = checkerCoordinate[0];
+    const y = checkerCoordinate[1];
+    const possibleSpaces = [
+        [x + 2, y + 2],
+        [x + 2, y - 2],
+        [x - 2, y - 2],
+        [x - 2, y + 2]
+    ];
+    const anySkips = possibleSpaces.map(spaceCoordinate => {
+        console.log(spaceCoordinate);
+        if (!isValidSpace(spaceCoordinate, board) ||
+            (!isCheckerKing(checkerCoordinate, board) &&
+            !isForwardMove(checkerCoordinate, spaceCoordinate, direction))) {
+            return false;
+        }
+        return skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, player).length !== 0;
+    });
+    console.log(anySkips);
+    return anySkips.some(el => el === true);
+}
+//endregion
+
+//region private functions
 function isCheckerKing(checkerCoordinate, board) {
     return board[checkerCoordinate[1]][checkerCoordinate[0]].isKing;
 }
 
-function isJumpPossible(checkerCoordinate, board, player) {
-
-}
-
 function isForwardMove(checkerCoordinate, spaceCoordinate, direction) {
     return Math.sign(checkerCoordinate[1] - spaceCoordinate[1]) === Math.sign(direction);
+}
+
+function getPlayerDirection(player) {
+    return  player === PLAYER_1_COLOR ? PLAYER_1_DIRECTION : PLAYER_2_DIRECTION;
 }
 
 function isInImmediateVicinity(checkerCoordinate, spaceCoordinate) {
@@ -74,13 +101,13 @@ function skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, player
         return [enemyCheckerX, enemyCheckerY];
     }
     return [];
-
 }
 
 function isValidSpace(spaceCoordinate, board) {
-    return isSpaceFree(spaceCoordinate, board)
-        && isRightColoredSpace(spaceCoordinate)
-        && !isOutOfBounds(spaceCoordinate);
+    console.log("IS", spaceCoordinate, "WITHIN BOUNDS", !isOutOfBounds(spaceCoordinate))
+    return !isOutOfBounds(spaceCoordinate)
+        && isSpaceFree(spaceCoordinate, board)
+        && isRightColoredSpace(spaceCoordinate);
 }
 
 function isRightColoredSpace(spaceCoordinate) {
@@ -88,9 +115,10 @@ function isRightColoredSpace(spaceCoordinate) {
 }
 
 function isOutOfBounds(coordinate) {
-    return coordinate[0] < 0 && coordinate[0] >= NUMBER_OF_COLUMNS && coordinate[1] < 0 && coordinate[1] >= NUMBER_OF_ROWS;
+    return coordinate[0] < 0 || coordinate[0] >= NUMBER_OF_COLUMNS || coordinate[1] < 0 || coordinate[1] >= NUMBER_OF_ROWS;
 }
 
 function isSpaceFree(spaceCoordinate, board) {
     return board[spaceCoordinate[1]][spaceCoordinate[0]] === null;
 }
+//endregion
