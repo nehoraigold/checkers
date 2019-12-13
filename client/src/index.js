@@ -2,13 +2,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
 //endregion
 
 function render() {
     ReactDOM.render(
-        <App/>,
+        <Provider store={store}>
+            <App/>
+        </Provider>,
         document.getElementById("root"));
 }
 
-document.addEventListener("DOMContentLoaded", render);
+render();

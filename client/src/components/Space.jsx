@@ -2,12 +2,19 @@
 import React from "react";
 import "./style/Space.css";
 import Checker from "./Checker";
-
+import { connect } from "react-redux";
 //endregion
 
-const Space = ({ color, checker }) =>
+const Space = ({ color, coordinate, checker }) =>
     <div className={`space ${color}`}>
-        {checker ? <Checker color={checker}/> : null}
+        {checker ? <Checker color={checker} coordinate={coordinate}/> : null}
     </div>;
 
-export default Space;
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        checker: state.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]]
+    };
+};
+
+export default connect(mapStateToProps)(Space);

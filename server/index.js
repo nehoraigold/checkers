@@ -18,6 +18,12 @@ function main() {
     const server = app.listen(configs.port, () => {
         console.log(`Server listening on port ${configs.port}...`)
     });
+
+    process.on('SIGINT', () => {
+        server.close(() => {
+            console.log("Server shutting down.");
+        });
+    })
 }
 
 main();

@@ -19,3 +19,7 @@
 .checker.white {
     background-color: white;
 }
+
+.checker.selected {
+    border: 3px solid red;
+}

@@ -24,17 +24,6 @@ const Board = () => {
         spaces.push(returnRow());
     }
 
-    let state = [
-        returnRow().map(spaceColor => spaceColor === "black" ? "white" : null),
-        returnRow().map(spaceColor => spaceColor === "black" ? "white" : null),
-        returnRow().map(spaceColor => spaceColor === "black" ? "white" : null),
-        Array(8).fill(null),
-        Array(8).fill(null),
-        returnRow().map(spaceColor => spaceColor === "black" ? "black" : null),
-        returnRow().map(spaceColor => spaceColor === "black" ? "black" : null),
-        returnRow().map(spaceColor => spaceColor === "black" ? "black" : null)
-    ];
-
     return (
         <div className="board">
             {spaces.map((row, rowNumber) =>
@@ -42,7 +31,7 @@ const Board = () => {
                     {row.map((spaceColor, spaceNumber) =>
                         <Space key={spaceNumber}
                                color={spaceColor}
-                               checker={state[rowNumber] ? state[rowNumber][spaceNumber] : null}/> )}
+                               coordinate={[spaceNumber, rowNumber]}/> )}
                 </div>)}
         </div>
     );
