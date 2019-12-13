@@ -1,0 +1,8 @@
+.crown-icon {
+    text-align: center;
+    height: 50%;
+    width: 50%;
+    transform: translate(-50%, 50%);
+    left: 50%;
+    position: absolute;
+}

@@ -1,5 +1,7 @@
 const path = require('path');
+const configs = require('./configs');
 const Html = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	mode: "development",
@@ -16,6 +18,9 @@ module.exports = {
 	devtool: "source-map",
 	plugins: [
 		new Html({template: "./client/public/index.html"}),
+		new CopyWebpackPlugin([
+			{from: `${configs.client.publicPath}/img`, to: "img"},
+		]),
 	],
 	module: {
 		rules: [

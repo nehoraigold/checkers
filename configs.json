@@ -1,0 +1,10 @@
+{
+  "client": {
+    "buildPath": "client/dist",
+    "srcPath": "client/src",
+    "publicPath": "client/public"
+  },
+  "server": {
+    "port": 8000
+  }
+}

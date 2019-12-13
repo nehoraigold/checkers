@@ -26,7 +26,7 @@ export function isValidMove(checkerCoordinate, spaceCoordinate, board, player) {
         return false;
     }
     const playerDirection = player === PLAYER_1_COLOR ? PLAYER_1_DIRECTION : PLAYER_2_DIRECTION;
-    if (!isForwardMove(checkerCoordinate, spaceCoordinate, playerDirection)) {
+    if (!isCheckerKing(checkerCoordinate, board) && !isForwardMove(checkerCoordinate, spaceCoordinate, playerDirection)) {
         return false;
     }
     if (isInImmediateVicinity(checkerCoordinate, spaceCoordinate)) {
@@ -38,6 +38,14 @@ export function isValidMove(checkerCoordinate, spaceCoordinate, board, player) {
         return enemyChecker;
     }
     return false;
+}
+
+export function hasReachedEnd(checkerCoordinate, player) {
+    return checkerCoordinate[1] === (player === PLAYER_1_COLOR ? NUMBER_OF_ROWS - 1 : 0);
+}
+
+function isCheckerKing(checkerCoordinate, board) {
+    return board[checkerCoordinate[1]][checkerCoordinate[0]].isKing;
 }
 
 function isJumpPossible(checkerCoordinate, board, player) {
