@@ -1,7 +1,7 @@
 //region imports
 import React from "react";
 import "./style/Checker.css";
-import { chooseChecker } from "../actions/gameActions"
+import { chooseChecker } from "../store/action"
 import { connect } from "react-redux";
 //endregion
 

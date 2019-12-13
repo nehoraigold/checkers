@@ -20,6 +20,10 @@
     background-color: white;
 }
 
+.checker.red {
+    background-color: red;
+}
+
 .checker.selected {
-    border: 3px solid red;
+    border: 3px solid blue;
 }
