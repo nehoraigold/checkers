@@ -34,6 +34,9 @@ export function isValidMove(checkerCoordinate, spaceCoordinate, board, player, h
         return !hasRestrictions
     }
     const enemyChecker = skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, player);
+    if (enemyChecker.length === 0 && hasRestrictions) {
+        return false;
+    }
     if (enemyChecker && enemyChecker.length > 0) {
         return enemyChecker;
     }

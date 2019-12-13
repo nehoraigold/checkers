@@ -1,5 +1,5 @@
 //region imports
-import { CHOOSE_SPACE, CHOOSE_CHECKER } from "../utils/constants";
+import { CHOOSE_SPACE, CHOOSE_CHECKER, CHANGE_CONFIG, SKIP_TURN } from "../utils/constants";
 import { PLAYER_1_COLOR, PLAYER_2_COLOR } from "../utils/constants";
 import {
     initializeBoard,
@@ -29,6 +29,10 @@ const rootReducer = (state = initialState, action) => {
             return chooseSpaceReducer(state, action);
         case CHOOSE_CHECKER:
             return chooseCheckerReducer(state, action);
+        case CHANGE_CONFIG:
+            return state;
+        case SKIP_TURN:
+            return state;
         default:
             return state;
     }
@@ -62,12 +66,15 @@ const handleTurnChange = (state, action, isValid) => {
     let coordinateRestrictions = [];
     let chosenCheckerCoordinate = action.coordinate;
     let turnNumber = state.turnNumber;
+    let score = Object.assign({}, state.score);
 
-    const score = Object.assign({}, state.score);
     if (Array.isArray(isValid)) {
         boardState[isValid[1]][isValid[0]] = null;
         score[state.currentPlayer]++;
         incrementTurn = !isJumpPossible(action.coordinate, boardState, state.currentPlayer)
+        if (!incrementTurn) {
+            coordinateRestrictions = [action.coordinate];
+        }
     }
 
     if (incrementTurn) {
