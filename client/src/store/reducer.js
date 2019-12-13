@@ -33,8 +33,9 @@ const chooseSpaceReducer = (state, action) => {
         return state;
     }
     let boardState = Array.from(state.boardState);
+    const checker = Object.assign({}, boardState[state.chosenCheckerCoordinate[1]][state.chosenCheckerCoordinate[0]]);
     boardState[state.chosenCheckerCoordinate[1]][state.chosenCheckerCoordinate[0]] = null;
-    boardState[action.coordinate[1]][action.coordinate[0]] = state.currentPlayer;
+    boardState[action.coordinate[1]][action.coordinate[0]] = checker;
     let incrementTurn = true;
     let score = Object.assign({}, state.score);
     if (Array.isArray(isValid)) {

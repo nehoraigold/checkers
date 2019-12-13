@@ -14,7 +14,7 @@ export function initializeBoard() {
     const createRow = (color, offset) =>
         Array(NUMBER_OF_COLUMNS)
             .fill(undefined)
-            .map((el, i) => (i + BOARD_ROW_0_OFFSET + offset) % 2 === 0 ? color : null);
+            .map((el, i) => color === null ? null : (i + BOARD_ROW_0_OFFSET + offset) % 2 === 0 ? {color, isKing: false} : null);
 
     return Array(NUMBER_OF_ROWS)
         .fill(undefined)

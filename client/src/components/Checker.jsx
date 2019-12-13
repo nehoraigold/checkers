@@ -5,20 +5,23 @@ import { chooseChecker } from "../store/action"
 import { connect } from "react-redux";
 //endregion
 
-const Checker = ({ color, coordinate, chooseChecker, isCheckerSelectable, isCheckerSelected }) => {
+const Checker = ({ color, isKing, coordinate, chooseChecker, isCheckerSelectable, isCheckerSelected }) => {
     const onCheckerClick = () => {
         if (isCheckerSelectable) {
             chooseChecker(coordinate);
         }
     };
 
-    return <div className={`checker ${color} ${isCheckerSelected ? "selected" : ""}`} onClick={onCheckerClick}/>
+    return <div className={`checker ${color} ${isCheckerSelected ? "selected" : ""} ${isKing ? "king" : ""}`} onClick={onCheckerClick}/>
 };
 
 const mapStateToProps = (state, ownProps) => {
+    const checker = state.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]];
     return {
-        isCheckerSelectable: state.currentPlayer === ownProps.color,
-        isCheckerSelected: state.chosenCheckerCoordinate !== null && state.chosenCheckerCoordinate === ownProps.coordinate
+        isCheckerSelectable: state.currentPlayer === checker.color,
+        isCheckerSelected: state.chosenCheckerCoordinate !== null && state.chosenCheckerCoordinate === ownProps.coordinate,
+        color: checker.color,
+        isKing: checker.isKing
     }
 };
 

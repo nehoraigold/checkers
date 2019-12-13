@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { chooseSpace } from "../store/action";
 //endregion
 
-const Space = ({ color, coordinate, checker, canSelectSpace, selectSpace }) => {
+const Space = ({ color, hasChecker, coordinate, canSelectSpace, selectSpace }) => {
     const onSpaceClick = () => {
         if (canSelectSpace) {
             selectSpace(coordinate);
@@ -15,7 +15,7 @@ const Space = ({ color, coordinate, checker, canSelectSpace, selectSpace }) => {
 
     return (
         <div className={`space ${color}`} onClick={onSpaceClick}>
-            {checker ? <Checker color={checker} coordinate={coordinate}/> : null}
+            {hasChecker ? <Checker coordinate={coordinate}/> : null}
         </div>
     );
 };
@@ -27,8 +27,8 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        checker: state.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]],
-        canSelectSpace: state.chosenCheckerCoordinate !== null
+        canSelectSpace: state.chosenCheckerCoordinate !== null,
+        hasChecker: state.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]] !== null
     };
 };
 
