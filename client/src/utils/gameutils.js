@@ -1,5 +1,12 @@
 //region imports
-import { NUMBER_OF_ROWS, NUMBER_OF_COLUMNS, PLAYER_1_COLOR, PLAYER_2_COLOR, BOARD_ROW_0_OFFSET } from "./constants";
+import {
+    NUMBER_OF_ROWS,
+    NUMBER_OF_COLUMNS,
+    PLAYER_1_COLOR,
+    PLAYER_2_COLOR,
+    BOARD_ROW_0_OFFSET,
+    PLAYER_1_DIRECTION, PLAYER_2_DIRECTION
+} from "./constants";
 
 //endregion
 
@@ -17,7 +24,12 @@ export function initializeBoard() {
 export function isValidMove(checkerCoordinate, spaceCoordinate, board, player) {
     if (!isValidSpace(spaceCoordinate, board)) {
         return false;
-    } else if (isInImmediateVicinity(checkerCoordinate, spaceCoordinate)) {
+    }
+    const playerDirection = player === PLAYER_1_COLOR ? PLAYER_1_DIRECTION : PLAYER_2_DIRECTION;
+    if (!isForwardMove(checkerCoordinate, spaceCoordinate, playerDirection)) {
+        return false;
+    }
+    if (isInImmediateVicinity(checkerCoordinate, spaceCoordinate)) {
         return true;
     }
     const enemyChecker = skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, player);
@@ -26,6 +38,14 @@ export function isValidMove(checkerCoordinate, spaceCoordinate, board, player) {
         return enemyChecker;
     }
     return false;
+}
+
+function isJumpPossible(checkerCoordinate, board, player) {
+
+}
+
+function isForwardMove(checkerCoordinate, spaceCoordinate, direction) {
+    return Math.sign(checkerCoordinate[1] - spaceCoordinate[1]) === Math.sign(direction);
 }
 
 function isInImmediateVicinity(checkerCoordinate, spaceCoordinate) {
@@ -38,6 +58,9 @@ function isInImmediateVicinity(checkerCoordinate, spaceCoordinate) {
 function skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, playerColor) {
     const enemyCheckerX = checkerCoordinate[0] + (spaceCoordinate[0] - checkerCoordinate[0]) / 2;
     const enemyCheckerY = checkerCoordinate[1] + (spaceCoordinate[1] - checkerCoordinate[1]) / 2;
+    if (enemyCheckerX % 1 !== 0 || enemyCheckerY % 1 !== 0) {
+        return [];
+    }
     const enemyCheckerLocation = board[enemyCheckerY][enemyCheckerX];
     if (enemyCheckerLocation && enemyCheckerLocation !== playerColor) {
         return [enemyCheckerX, enemyCheckerY];

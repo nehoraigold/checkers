@@ -1,6 +1,6 @@
 //region imports
 import React from "react";
-import "./style/Space.css";
+import "../style/Space.css";
 import Checker from "./Checker";
 import { connect } from "react-redux";
 import { chooseSpace } from "../store/action";
@@ -18,7 +18,6 @@ const Space = ({ color, coordinate, checker, canSelectSpace, selectSpace }) => {
             {checker ? <Checker color={checker} coordinate={coordinate}/> : null}
         </div>
     );
-
 };
 
 const mapDispatchToProps = dispatch => {

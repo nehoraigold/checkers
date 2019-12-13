@@ -5,8 +5,8 @@ import rootReducer from "../store/reducer";
 //endregion
 
 const store = createStore(rootReducer);
-// store.subscribe(() => {
-//     console.log(store.getState())
-// });
+store.subscribe(() => {
+    console.log(store.getState())
+});
 
 export default store;

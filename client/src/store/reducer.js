@@ -9,7 +9,11 @@ const initialState = {
     turnNumber: 1,
     boardState: initializeBoard(),
     currentPlayer: PLAYER_1_COLOR,
-    chosenCheckerCoordinate: null
+    chosenCheckerCoordinate: null,
+    score: {
+        [PLAYER_1_COLOR]: 0,
+        [PLAYER_2_COLOR]: 0
+    }
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -28,22 +32,24 @@ const chooseSpaceReducer = (state, action) => {
     if (isValid === false) {
         return state;
     }
-    let newBoard = Array.from(state.boardState);
-    newBoard[state.chosenCheckerCoordinate[1]][state.chosenCheckerCoordinate[0]] = null;
-    newBoard[action.coordinate[1]][action.coordinate[0]] = state.currentPlayer;
+    let boardState = Array.from(state.boardState);
+    boardState[state.chosenCheckerCoordinate[1]][state.chosenCheckerCoordinate[0]] = null;
+    boardState[action.coordinate[1]][action.coordinate[0]] = state.currentPlayer;
     let incrementTurn = true;
+    let score = Object.assign({}, state.score);
     if (Array.isArray(isValid)) {
-        newBoard[isValid[1]][isValid[0]] = null;
-        incrementTurn = false;
+        boardState[isValid[1]][isValid[0]] = null;
+        score[state.currentPlayer]++;
     }
-    return {
+    return Object.assign({}, state, {
         turnNumber: incrementTurn ? state.turnNumber + 1 : state.turnNumber,
         currentPlayer: incrementTurn ?
             (state.currentPlayer === PLAYER_1_COLOR ? PLAYER_2_COLOR : PLAYER_1_COLOR)
             : state.currentPlayer,
         chosenCheckerCoordinate: incrementTurn ? null : action.coordinate,
-        boardState: newBoard
-    };
+        boardState,
+        score
+    });
 };
 
 const chooseCheckerReducer = (state, action) => {
