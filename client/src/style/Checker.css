@@ -5,7 +5,7 @@
     max-width: 10vh;
     max-height: 10vh;
     border-radius: 50%;
-    border: 1px solid black;
+    border: 0 solid black;
     z-index:1;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -15,20 +15,29 @@
 .checker.black {
     background-color: black;
     border-color: white;
+    background-image: radial-gradient(circle, rgba(0,0,0,1) 20%, rgba(255,255,255,0.2) 60%, rgba(0,0,0,1) 100%);
 }
 
 .checker.white {
     background-color: white;
-}
-
-.checker.red {
-    background-color: red;
+    border-color: black;
+    background-image: radial-gradient(circle, rgba(255,255,255,1) 20%, rgba(0,0,0,0.2) 60%, rgba(255,255,255,1) 100%);
 }
 
 .checker.selected, .checker.selected.restricted {
-    border: 3px solid blue;
+    /*border: 3px solid blue;*/
+    animation: pulseOuter 1s linear 0s infinite alternate;
 }
 
 .checker.restricted {
     border: 3px solid red;
+}
+
+@keyframes pulseOuter {
+    from {
+        box-shadow: 0 0 20px 10px rgba(255,255,255,0.8);
+    }
+    to {
+        box-shadow: 0 0 5px 5px rgba(255,255,255,0.4);
+    }
 }
