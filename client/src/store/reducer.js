@@ -1,5 +1,5 @@
 //region imports
-import { CHOOSE_SPACE, CHOOSE_CHECKER, CHANGE_CONFIG, SKIP_TURN } from "../utils/constants";
+import { CHOOSE_SPACE, CHOOSE_CHECKER, CHANGE_CONFIG, SKIP_TURN, RESTART_GAME } from "../utils/constants";
 import { PLAYER_1_COLOR, PLAYER_2_COLOR } from "../utils/constants";
 import {
     getInitialBoardState,
@@ -30,6 +30,8 @@ const rootReducer = (state = initialState, action) => {
             return chooseSpaceReducer(state, action);
         case CHOOSE_CHECKER:
             return chooseCheckerReducer(state, action);
+        case RESTART_GAME:
+            return Object.assign({}, initialState, {boardState: getInitialBoardState()});
         case CHANGE_CONFIG:
             return state;
         case SKIP_TURN:

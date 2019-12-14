@@ -1,5 +1,5 @@
 //region imports
-import { CHANGE_CONFIG, CHOOSE_CHECKER, CHOOSE_SPACE, SKIP_TURN } from "../utils/constants"
+import { CHANGE_CONFIG, CHOOSE_CHECKER, CHOOSE_SPACE, SKIP_TURN, RESTART_GAME } from "../utils/constants"
 //endregion
 
 export const chooseChecker = (coordinate) => {
@@ -16,4 +16,8 @@ export const changeConfig = (config) => {
 
 export const skipTurn = () => {
     return { type: SKIP_TURN };
+};
+
+export const restartGame = () => {
+    return { type: RESTART_GAME };
 };
