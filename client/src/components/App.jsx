@@ -8,6 +8,7 @@ import GameStatus from "./GameStatus"
 
 const App = () =>
     <div className="app">
+        {/*<Title/>*/}
         <GameStatus/>
         <Board/>
     </div>;

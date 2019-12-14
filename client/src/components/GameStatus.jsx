@@ -3,6 +3,7 @@ import React from "react";
 import "../style/GameStatus.css";
 import { connect } from "react-redux";
 import { PLAYER_1_COLOR, PLAYER_2_COLOR } from "../utils/constants";
+import { capitalize } from "../utils/common";
 //endregion
 
 const GameStatus = ({ score }) => {
@@ -10,9 +11,8 @@ const GameStatus = ({ score }) => {
         <div className="game-status">
             <h3>Game Status</h3>
             <p>
-                {`${PLAYER_1_COLOR}: ${score[PLAYER_1_COLOR]}`}
-                <br/>
-                {`${PLAYER_2_COLOR}: ${score[PLAYER_2_COLOR]}`}
+                {`${capitalize(PLAYER_1_COLOR)}: ${score[PLAYER_1_COLOR]}`}
+                {`${capitalize(PLAYER_2_COLOR)}: ${score[PLAYER_2_COLOR]}`}
             </p>
         </div>
     );

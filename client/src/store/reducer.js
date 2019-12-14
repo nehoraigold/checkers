@@ -2,18 +2,19 @@
 import { CHOOSE_SPACE, CHOOSE_CHECKER, CHANGE_CONFIG, SKIP_TURN } from "../utils/constants";
 import { PLAYER_1_COLOR, PLAYER_2_COLOR } from "../utils/constants";
 import {
-    initializeBoard,
+    getInitialBoardState,
     isValidMove,
-    hasReachedEnd,
+    isCheckerAtEnd,
     isJumpPossible,
-    getCheckerCoordinatesAbleToJump
+    getCheckerCoordinatesAbleToJump, getWinner
 } from "../utils/gameutils"
 
 //endregion
 
 const initialState = {
     turnNumber: 1,
-    boardState: initializeBoard(),
+    winner: null,
+    boardState: getInitialBoardState(),
     currentPlayer: PLAYER_1_COLOR,
     chosenCheckerCoordinate: null,
     coordinateRestrictions: [],
@@ -55,7 +56,7 @@ const handleTurnChange = (state, action, isValid) => {
     let boardState = Array.from(state.boardState);
 
     const checker = Object.assign({}, boardState[state.chosenCheckerCoordinate[1]][state.chosenCheckerCoordinate[0]]);
-    if (hasReachedEnd(action.coordinate, state.currentPlayer)) {
+    if (isCheckerAtEnd(action.coordinate, state.currentPlayer)) {
         checker.isKing = true;
     }
     boardState[state.chosenCheckerCoordinate[1]][state.chosenCheckerCoordinate[0]] = null;
@@ -69,9 +70,10 @@ const handleTurnChange = (state, action, isValid) => {
     let score = Object.assign({}, state.score);
 
     if (Array.isArray(isValid)) {
+        let points = boardState[isValid[1]][isValid[0]].isKing ? 2 : 1;
         boardState[isValid[1]][isValid[0]] = null;
-        score[state.currentPlayer]++;
-        incrementTurn = !isJumpPossible(action.coordinate, boardState, state.currentPlayer)
+        score[state.currentPlayer] += points;
+        incrementTurn = !isJumpPossible(action.coordinate, boardState, state.currentPlayer);
         if (!incrementTurn) {
             coordinateRestrictions = [action.coordinate];
         }
@@ -84,6 +86,7 @@ const handleTurnChange = (state, action, isValid) => {
         turnNumber++;
     }
 
+    const winner = getWinner(boardState);
     return Object.assign({}, state, {
         currentPlayer: nextPlayer,
         turnNumber,
@@ -91,6 +94,7 @@ const handleTurnChange = (state, action, isValid) => {
         coordinateRestrictions,
         boardState,
         score,
+        winner
     });
 };
 

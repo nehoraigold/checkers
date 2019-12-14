@@ -14,7 +14,7 @@ const Space = ({ color, hasChecker, coordinate, canSelectSpace, selectSpace }) =
     };
 
     return (
-        <div className={`space ${color}`} onClick={onSpaceClick}>
+        <div className={`space ${color} ${canSelectSpace ? "selectable" : ""}`} onClick={onSpaceClick}>
             {hasChecker ? <Checker coordinate={coordinate}/> : null}
         </div>
     );

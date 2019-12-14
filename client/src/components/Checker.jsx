@@ -14,7 +14,12 @@ const Checker = ({ color, isKing, coordinate, chooseChecker, isSelectable, isSel
         }
     };
     return (
-        <div className={`checker ${color} ${isSelected ? "selected" : ""} ${isRestricted ? "restricted" : ""}`} onClick={onCheckerClick}>
+        <div
+            className={`checker ${color} 
+                ${isSelected ? "selected" : ""} 
+                ${isRestricted ? "restricted" : ""} 
+                ${isSelectable ? "selectable" : ""}`}
+            onClick={onCheckerClick}>
             {isKing ? <CrownIcon color={color === PLAYER_1_COLOR ? PLAYER_2_COLOR : PLAYER_1_COLOR}/> : null}
         </div>
     );

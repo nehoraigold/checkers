@@ -11,11 +11,14 @@ import {
 //endregion
 
 //region exported functions
-export function initializeBoard() {
+export function getInitialBoardState() {
     const createRow = (color, offset) =>
         Array(NUMBER_OF_COLUMNS)
             .fill(undefined)
-            .map((el, i) => color === null ? null : (i + BOARD_ROW_0_OFFSET + offset) % 2 === 0 ? {color, isKing: false} : null);
+            .map((el, i) => color === null ? null : (i + BOARD_ROW_0_OFFSET + offset) % 2 === 0 ? {
+                color,
+                isKing: false
+            } : null);
 
     return Array(NUMBER_OF_ROWS)
         .fill(undefined)
@@ -43,19 +46,19 @@ export function isValidMove(checkerCoordinate, spaceCoordinate, board, player, h
     return false;
 }
 
-export function hasReachedEnd(checkerCoordinate, player) {
+export function isCheckerAtEnd(checkerCoordinate, player) {
     return checkerCoordinate[1] === (player === PLAYER_1_COLOR ? NUMBER_OF_ROWS - 1 : 0);
 }
 
 export function isJumpPossible(checkerCoordinate, board, player) {
     return getPossibleJumpSpaces(checkerCoordinate).some(spaceCoordinate => {
-            if (!isValidSpace(spaceCoordinate, board) ||
-                (!isCheckerKing(checkerCoordinate, board) &&
+        if (!isValidSpace(spaceCoordinate, board) ||
+            (!isCheckerKing(checkerCoordinate, board) &&
                 !isForwardMove(checkerCoordinate, spaceCoordinate, getPlayerDirection(player)))) {
-                return false;
-            }
-            return skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, player).length !== 0;
-        });
+            return false;
+        }
+        return skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, player).length !== 0;
+    });
 }
 
 export function getCheckerCoordinatesAbleToJump(board, player) {
@@ -68,9 +71,25 @@ export function getCheckerCoordinatesAbleToJump(board, player) {
             }
         });
     });
-    console.log(checkersAbleToJump);
     return checkersAbleToJump;
 }
+
+export function getWinner(board) {
+    const stillAlive = { [PLAYER_1_COLOR]: false, [PLAYER_2_COLOR]: false };
+    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+        for (let j = 0; j < NUMBER_OF_COLUMNS; j++) {
+            const checker = board[j][i];
+            if (checker !== null) {
+                stillAlive[checker.color] = true;
+                if (stillAlive[PLAYER_1_COLOR] && stillAlive[PLAYER_2_COLOR]) {
+                    return null;
+                }
+            }
+        }
+    }
+    return stillAlive[PLAYER_1_COLOR] ? PLAYER_1_COLOR : PLAYER_2_COLOR;
+}
+
 //endregion
 
 //region private functions
@@ -83,7 +102,7 @@ function isForwardMove(checkerCoordinate, spaceCoordinate, direction) {
 }
 
 function getPlayerDirection(player) {
-    return  player === PLAYER_1_COLOR ? PLAYER_1_DIRECTION : PLAYER_2_DIRECTION;
+    return player === PLAYER_1_COLOR ? PLAYER_1_DIRECTION : PLAYER_2_DIRECTION;
 }
 
 function getPossibleJumpSpaces(coordinate) {
@@ -98,22 +117,21 @@ function getPossibleJumpSpaces(coordinate) {
 }
 
 function isInImmediateVicinity(checkerCoordinate, spaceCoordinate) {
-    const xValue = checkerCoordinate[0];
-    const yValue = checkerCoordinate[1];
-    return (spaceCoordinate[0] === xValue + 1 || spaceCoordinate[0] === xValue - 1)
-        && (spaceCoordinate[1] === yValue + 1 || spaceCoordinate[1] === yValue - 1);
+    const x = checkerCoordinate[0];
+    const y = checkerCoordinate[1];
+    return (spaceCoordinate[0] === x + 1 || spaceCoordinate[0] === x - 1)
+        && (spaceCoordinate[1] === y + 1 || spaceCoordinate[1] === y - 1);
 }
 
 function skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, playerColor) {
-    const enemyCheckerX = checkerCoordinate[0] + (spaceCoordinate[0] - checkerCoordinate[0]) / 2;
-    const enemyCheckerY = checkerCoordinate[1] + (spaceCoordinate[1] - checkerCoordinate[1]) / 2;
-    if (enemyCheckerX % 1 !== 0 || enemyCheckerY % 1 !== 0) {
+    const skippedCheckerX = checkerCoordinate[0] + (spaceCoordinate[0] - checkerCoordinate[0]) / 2;
+    const skippedCheckerY = checkerCoordinate[1] + (spaceCoordinate[1] - checkerCoordinate[1]) / 2;
+    if (skippedCheckerX % 1 !== 0 || skippedCheckerY % 1 !== 0) {
         return [];
     }
-    const skippedChecker = board[enemyCheckerY][enemyCheckerX];
+    const skippedChecker = board[skippedCheckerY][skippedCheckerX];
     if (skippedChecker && skippedChecker.color !== playerColor) {
-        console.log(skippedChecker.color, "enemy checker", [enemyCheckerX, enemyCheckerY]);
-        return [enemyCheckerX, enemyCheckerY];
+        return [skippedCheckerX, skippedCheckerY];
     }
     return [];
 }
@@ -135,4 +153,5 @@ function isOutOfBounds(coordinate) {
 function isSpaceFree(spaceCoordinate, board) {
     return board[spaceCoordinate[1]][spaceCoordinate[0]] === null;
 }
+
 //endregion

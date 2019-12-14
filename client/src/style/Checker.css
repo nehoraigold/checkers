@@ -1,31 +1,37 @@
 .checker {
-    position: relative;
-    width: 10vw;
-    height: 10vw;
-    max-width: 10vh;
-    max-height: 10vh;
+    position: absolute;
+    width: 8vw;
+    height: 8vw;
+    max-width: 8vh;
+    max-height: 8vh;
     border-radius: 50%;
     border: 0 solid black;
-    z-index:1;
+    z-index: 1;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .checker.black {
     background-color: black;
     border-color: white;
-    background-image: radial-gradient(circle, rgba(0,0,0,1) 20%, rgba(255,255,255,0.2) 60%, rgba(0,0,0,1) 100%);
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, rgba(0, 0, 0, 1) 40%, rgba(255, 255, 255, 0.3) 60%, rgba(0, 0, 0, 1) 100%);
 }
 
 .checker.white {
     background-color: white;
     border-color: black;
-    background-image: radial-gradient(circle, rgba(255,255,255,1) 20%, rgba(0,0,0,0.2) 60%, rgba(255,255,255,1) 100%);
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 10%, rgba(0, 0, 0, 0.3) 40%, rgba(255, 255, 255, 0.9) 60%, rgba(0, 0, 0, 0.3) 100%);
+}
+
+.checker.selectable {
+    cursor: pointer;
 }
 
 .checker.selected, .checker.selected.restricted {
-    /*border: 3px solid blue;*/
     animation: pulseOuter 1s linear 0s infinite alternate;
 }
 
@@ -35,9 +41,9 @@
 
 @keyframes pulseOuter {
     from {
-        box-shadow: 0 0 20px 10px rgba(255,255,255,0.8);
+        box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.8);
     }
     to {
-        box-shadow: 0 0 5px 5px rgba(255,255,255,0.4);
+        box-shadow: 0 0 5px 5px rgba(255, 255, 255, 0.4);
     }
 }
