@@ -21,7 +21,8 @@ const initialState = {
     score: {
         [PLAYER_1_COLOR]: 0,
         [PLAYER_2_COLOR]: 0
-    }
+    },
+    configs: {}
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -32,10 +33,6 @@ const rootReducer = (state = initialState, action) => {
             return chooseCheckerReducer(state, action);
         case RESTART_GAME:
             return Object.assign({}, initialState, {boardState: getInitialBoardState()});
-        case CHANGE_CONFIG:
-            return state;
-        case SKIP_TURN:
-            return state;
         default:
             return state;
     }

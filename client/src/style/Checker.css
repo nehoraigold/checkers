@@ -39,6 +39,21 @@
     border: 3px solid red;
 }
 
+.checker.token {
+    pointer-events: none;
+    width: 5vh;
+    height: 5vh;
+    max-width: 3vw;
+    max-height: 3vw;
+    position: static;
+    border: 0;
+    top: 0;
+    left: 0;
+    transform: translate(0, 0);
+    display: inline-block;
+    vertical-align: middle;
+}
+
 @keyframes pulseOuter {
     from {
         box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.8);

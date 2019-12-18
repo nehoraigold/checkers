@@ -7,6 +7,8 @@ export const RESTART_GAME = "RESTART_GAME";
 //endregion
 
 //region configurations
+export const PLAYER_COLORS = ["white", "black"];
+export const SPACE_COLORS = ["white", "black"];
 export const NUMBER_OF_COLUMNS = 8;
 export const NUMBER_OF_ROWS = 8;
 export const NUMBER_OF_CHECKERS = 12;

@@ -89,7 +89,6 @@ export function getWinner(board) {
     }
     return stillAlive[PLAYER_1_COLOR] ? PLAYER_1_COLOR : PLAYER_2_COLOR;
 }
-
 //endregion
 
 //region private functions

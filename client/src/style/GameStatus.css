@@ -1,11 +1,32 @@
 .game-status {
-    width: 100%;
     color: black;
     font-size: 20px;
+    box-sizing: border-box;
+    margin: 1vw;
+    line-height: 2em;
 }
 
-.game-status h3, .game-status p {
+.game-status h3 {
     line-height: 1;
     margin-block-start: 10px;
     margin-block-end: 5px;
+}
+
+.game-status .score-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-status .score-box .score {
+    margin: 0 10px;
+}
+
+.game-status .score-box .checker.token {
+    margin: 5px;
+}
+
+.game-status .restart-button {
+    background-color: black;
+    border-color: white;
 }

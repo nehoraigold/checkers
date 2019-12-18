@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { PLAYER_1_COLOR, PLAYER_2_COLOR } from "../utils/constants";
 //endregion
 
-const Checker = ({ color, isKing, coordinate, chooseChecker, isSelectable, isSelected, isRestricted }) => {
+const Checker = ({ color, isKing, coordinate, chooseChecker, isSelectable, isSelected, isRestricted, isToken }) => {
     const onCheckerClick = () => {
         if (isSelectable) {
             chooseChecker(coordinate);
@@ -16,16 +16,20 @@ const Checker = ({ color, isKing, coordinate, chooseChecker, isSelectable, isSel
     return (
         <div
             className={`checker ${color} 
+                ${isToken ? "token" : ""}
                 ${isSelected ? "selected" : ""} 
                 ${isRestricted ? "restricted" : ""} 
                 ${isSelectable ? "selectable" : ""}`}
-            onClick={onCheckerClick}>
+            onClick={isToken ? null : onCheckerClick}>
             {isKing ? <CrownIcon color={color === PLAYER_1_COLOR ? PLAYER_2_COLOR : PLAYER_1_COLOR}/> : null}
         </div>
     );
 };
 
 const mapStateToProps = (state, ownProps) => {
+    if (ownProps.isToken) {
+        return {};
+    }
     const checker = state.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]];
     const isSelected = state.chosenCheckerCoordinate !== null
         && state.chosenCheckerCoordinate[0] === ownProps.coordinate[0]
