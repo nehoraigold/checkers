@@ -29,6 +29,7 @@
 
 .checker.selectable {
     cursor: pointer;
+    border: 5px solid yellow;
 }
 
 .checker.selected, .checker.selected.restricted {

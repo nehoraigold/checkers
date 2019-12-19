@@ -37,7 +37,7 @@ const mapStateToProps = (state, ownProps) => {
     const isRestricted = state.coordinateRestrictions.some(coordinate => {
         return coordinate[0] === ownProps.coordinate[0] && coordinate[1] === ownProps.coordinate[1];
     });
-    const isSelectable = (state.coordinateRestrictions.length === 0 && state.currentPlayer === checker.color) || isRestricted;
+    const isSelectable = state.coordinateRestrictions.length > 0 ? isRestricted : checker.isMovable;
     return {
         color: checker.color,
         isKing: checker.isKing,

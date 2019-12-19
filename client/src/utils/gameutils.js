@@ -15,14 +15,12 @@ export function getInitialBoardState() {
     const createRow = (color, offset) =>
         Array(NUMBER_OF_COLUMNS)
             .fill(undefined)
-            .map((el, i) => color === null ? null : (i + BOARD_ROW_0_OFFSET + offset) % 2 === 0 ? {
-                color,
-                isKing: false
-            } : null);
-
-    return Array(NUMBER_OF_ROWS)
+            .map((el, i) => color === null ? null :
+                (i + BOARD_ROW_0_OFFSET + offset) % 2 === 0 ? createDefaultChecker(color) : null);
+    const initialBoard = Array(NUMBER_OF_ROWS)
         .fill(undefined)
         .map((el, i) => createRow(i < 3 ? PLAYER_1_COLOR : i > 4 ? PLAYER_2_COLOR : null, i));
+    return setMovableCheckers(initialBoard, PLAYER_1_COLOR);
 }
 
 export function isValidMove(checkerCoordinate, spaceCoordinate, board, player, hasRestrictions) {
@@ -89,9 +87,31 @@ export function getWinner(board) {
     }
     return stillAlive[PLAYER_1_COLOR] ? PLAYER_1_COLOR : PLAYER_2_COLOR;
 }
+
+export function setMovableCheckers(board, currentPlayer) {
+    board.forEach((row, y) => {
+        row.forEach((checker, x) => {
+            if (checker && checker.color === currentPlayer && isCheckerMovable([x, y], board)) {
+                checker.isMovable = true;
+            }
+        });
+    });
+    return board;
+}
+
 //endregion
 
 //region private functions
+function isCheckerMovable(coordinate, board) {
+    const player = board[coordinate[1]][coordinate[0]].color;
+    const potentialMoveSpaces = getAllImmediateMoveSpaces(coordinate).concat(getPossibleJumpSpaces(coordinate));
+    return potentialMoveSpaces.some(space => isValidMove(coordinate, space, board, player, false));
+}
+
+function createDefaultChecker(color) {
+    return { color, isKing: false, isMovable: false };
+}
+
 function isCheckerKing(checkerCoordinate, board) {
     return board[checkerCoordinate[1]][checkerCoordinate[0]].isKing;
 }
@@ -112,6 +132,15 @@ function getPossibleJumpSpaces(coordinate) {
         [x + 2, y - 2],
         [x - 2, y - 2],
         [x - 2, y + 2]
+    ];
+}
+
+function getAllImmediateMoveSpaces(coordinate) {
+    return [
+        [coordinate[0] + 1, coordinate[1] + 1],
+        [coordinate[0] - 1, coordinate[1] - 1],
+        [coordinate[0] + 1, coordinate[1] - 1],
+        [coordinate[0] - 1, coordinate[1] + 1]
     ];
 }
 

@@ -6,24 +6,12 @@ import {
     isValidMove,
     isCheckerAtEnd,
     isJumpPossible,
-    getCheckerCoordinatesAbleToJump, getWinner
+    getCheckerCoordinatesAbleToJump, getWinner, setMovableCheckers
 } from "../utils/gameutils"
 
 //endregion
 
-const initialState = {
-    turnNumber: 1,
-    winner: null,
-    boardState: getInitialBoardState(),
-    currentPlayer: PLAYER_1_COLOR,
-    chosenCheckerCoordinate: null,
-    coordinateRestrictions: [],
-    score: {
-        [PLAYER_1_COLOR]: 0,
-        [PLAYER_2_COLOR]: 0
-    },
-    configs: {}
-};
+const initialState = getInitialState();
 
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -52,7 +40,9 @@ const chooseSpaceReducer = (state, action) => {
 };
 
 const handleTurnChange = (state, action, isValid) => {
-    let boardState = Array.from(state.boardState);
+    let boardState = Array.from(state.boardState)
+        .map(row => row.map(checker =>
+            checker === null ? null : {color: checker.color, isKing: checker.isKing, isMovable: false}));
 
     const checker = Object.assign({}, boardState[state.chosenCheckerCoordinate[1]][state.chosenCheckerCoordinate[0]]);
     if (isCheckerAtEnd(action.coordinate, state.currentPlayer)) {
@@ -80,11 +70,11 @@ const handleTurnChange = (state, action, isValid) => {
 
     if (incrementTurn) {
         nextPlayer = state.currentPlayer === PLAYER_1_COLOR ? PLAYER_2_COLOR : PLAYER_1_COLOR;
-        coordinateRestrictions = getCheckerCoordinatesAbleToJump(boardState, nextPlayer);
+        coordinateRestrictions = state.configs.restricted ? getCheckerCoordinatesAbleToJump(boardState, nextPlayer) : [];
         chosenCheckerCoordinate = coordinateRestrictions.length === 0 ? null : Array.from(coordinateRestrictions[0]);
         turnNumber++;
     }
-
+    setMovableCheckers(boardState, nextPlayer);
     const winner = getWinner(boardState);
     return Object.assign({}, state, {
         currentPlayer: nextPlayer,
@@ -102,5 +92,23 @@ const chooseCheckerReducer = (state, action) => {
         chosenCheckerCoordinate: action.coordinate
     });
 };
+
+function getInitialState() {
+    return {
+        turnNumber: 1,
+        winner: null,
+        boardState: getInitialBoardState(),
+        currentPlayer: PLAYER_1_COLOR,
+        chosenCheckerCoordinate: null,
+        coordinateRestrictions: [],
+        score: {
+            [PLAYER_1_COLOR]: 0,
+            [PLAYER_2_COLOR]: 0
+        },
+        configs: {
+            restricted: true
+        }
+    };
+}
 
 export default rootReducer;
