@@ -27,7 +27,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = ({ gameState }, ownProps) => {
     return {
-        canSelectSpace: gameState.chosenCheckerCoordinate !== null,
+        canSelectSpace: gameState.chosenCheckerCoordinate !== null, //TODO: Make this more sophisticated
         hasChecker: gameState.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]] !== null
     };
 };

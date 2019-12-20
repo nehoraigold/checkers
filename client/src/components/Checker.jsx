@@ -26,7 +26,7 @@ const Checker = ({ color, isKing, coordinate, chooseChecker, isSelectable, isSel
     );
 };
 
-const mapStateToProps = ({ gameState }, ownProps) => {
+const mapStateToProps = ({ gameState, configs }, ownProps) => {
     if (ownProps.isToken) {
         return {};
     }
@@ -37,7 +37,7 @@ const mapStateToProps = ({ gameState }, ownProps) => {
     const isRestricted = gameState.coordinateRestrictions.some(coordinate => {
         return coordinate[0] === ownProps.coordinate[0] && coordinate[1] === ownProps.coordinate[1];
     });
-    const isSelectable = gameState.coordinateRestrictions.length > 0 ? isRestricted : checker.isMovable;
+    const isSelectable = configs.restricted && gameState.coordinateRestrictions.length > 0 ? isRestricted : checker.isMovable;
     return {
         color: checker.color,
         isKing: checker.isKing,

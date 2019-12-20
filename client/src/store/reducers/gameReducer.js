@@ -1,5 +1,5 @@
 //region imports
-import { CHOOSE_SPACE, CHOOSE_CHECKER, RESTART_GAME } from "../../utils/constants";
+import { CHOOSE_SPACE, CHOOSE_CHECKER, RESTART_GAME, CHANGE_CONFIG } from "../../utils/constants";
 import { PLAYER_1_COLOR, PLAYER_2_COLOR } from "../../utils/constants";
 import {
     getInitialBoardState,
@@ -51,7 +51,7 @@ const chooseSpaceReducer = ({ gameState, configs }, action) => {
         action.coordinate,
         gameState.boardState,
         gameState.currentPlayer,
-        gameState.coordinateRestrictions.length > 0);
+        configs.restricted && gameState.coordinateRestrictions.length > 0);
     if (isValid === false) {
         return gameState;
     }
@@ -89,7 +89,7 @@ const handleTurnChange = ({ gameState, configs }, action, isValid) => {
 
     if (incrementTurn) {
         nextPlayer = gameState.currentPlayer === PLAYER_1_COLOR ? PLAYER_2_COLOR : PLAYER_1_COLOR;
-        coordinateRestrictions = configs.restricted ? getCheckerCoordinatesAbleToJump(boardState, nextPlayer) : [];
+        coordinateRestrictions = getCheckerCoordinatesAbleToJump(boardState, nextPlayer);
         chosenCheckerCoordinate = coordinateRestrictions.length === 0 ? null : Array.from(coordinateRestrictions[0]);
         turnNumber++;
     }
