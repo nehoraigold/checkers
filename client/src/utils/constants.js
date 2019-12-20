@@ -8,7 +8,7 @@ export const RESTART_GAME = "RESTART_GAME";
 //endregion
 
 //region configurations
-export const PLAYER_COLORS = ["white", "black", "red"];
+export const ALL_PLAYER_COLORS = ["white", "black", "red"];
 export const COMPLEMENTARY_COLORS = {
     "white": "black",
     "black": "white",

@@ -3,7 +3,7 @@ import React from "react";
 import "../style/GameStatus.css";
 import { connect } from "react-redux";
 import { changeConfig, restartGame, changePlayerColor } from "../store/actions";
-import { PLAYER_ONE, PLAYER_TWO, PLAYER_COLORS } from "../utils/constants";
+import { PLAYER_ONE, PLAYER_TWO, ALL_PLAYER_COLORS } from "../utils/constants";
 import { Button, Switch, Select } from "antd";
 const { Option } = Select;
 import "antd/dist/antd.css";
@@ -19,7 +19,7 @@ const GameStatus = ({ score, playerColors, winner, restart, restrictionsOn, togg
                 {[PLAYER_ONE, PLAYER_TWO].map(player =>
                 <div className="score" key={player}>
                     <Select defaultValue={playerColors[player]} onChange={color => onCheckerColorChange(player, color)}>
-                        {PLAYER_COLORS.map(color =>
+                        {ALL_PLAYER_COLORS.map(color =>
                             <Option key={color} value={color} disabled={playerColors.some(playerColor => color === playerColor)}>
                                 {color}
                             </Option>)}

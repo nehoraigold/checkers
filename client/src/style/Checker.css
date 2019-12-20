@@ -5,7 +5,7 @@
     max-width: 8vh;
     max-height: 8vh;
     border-radius: 50%;
-    border: 0 solid black;
+    border: 0;
     z-index: 1;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -17,10 +17,9 @@
 
 .checker.black {
     background-color: black;
-    border-color: white;
     background-image: radial-gradient(circle,
         rgba(255, 255, 255, 0.2) 10%,
-        rgba(255, 255, 255, 0.05) 30%,
+        rgba(255, 255, 255, 0.1) 30%,
         rgba(0, 0, 0, 1) 50%,
         rgba(255, 255, 255, 0.3) 60%,
         rgba(0, 0, 0, 1) 100%);
@@ -28,21 +27,19 @@
 
 .checker.white {
     background-color: white;
-    border-color: black;
     background-image: radial-gradient(circle,
         rgba(255, 255, 255, 0.5) 10%,
         rgba(0, 0, 0, 0.1) 30%,
-        rgba(0, 0, 0, 0.4) 50%,
+        rgba(0, 0, 0, 0.5) 50%,
         rgba(255, 255, 255, 0.9) 60%,
         rgba(0, 0, 0, 0.3) 100%);
 }
 
 .checker.red {
     background-color: red;
-    border-color: red;
     background-image: radial-gradient(circle,
         rgba(255, 255, 255, 0.05) 10%,
-        rgba(100, 0, 0, 0.5) 30%,
+        rgba(100, 0, 0, 0.3) 30%,
         rgba(20, 0, 0, 0.7) 50%,
         rgba(255, 0, 0, 0.9) 60%,
         rgba(0, 0, 0, 0.3) 100%);

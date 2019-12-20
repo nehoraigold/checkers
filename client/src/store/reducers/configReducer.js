@@ -1,12 +1,11 @@
 //region imports
-import { CHANGE_CONFIG, CHANGE_PLAYER_COLOR, PLAYER_COLORS } from "../../utils/constants";
+import { CHANGE_CONFIG, CHANGE_PLAYER_COLOR } from "../../utils/constants";
 //endregion
 
 export const getInitialConfigState = () => {
     return {
         restricted: true,
         playerColors: ["white", "black"],
-        possiblePlayerColors: PLAYER_COLORS
     };
 };
 
