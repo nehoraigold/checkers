@@ -1,9 +1,13 @@
 //region imports
-import { CHANGE_CONFIG } from "../../utils/constants";
+import { CHANGE_CONFIG, PLAYER_COLORS } from "../../utils/constants";
 //endregion
 
 export const getInitialConfigState = () => {
-    return { restricted: true };
+    return {
+        restricted: true,
+        playerColors: ["white", "black"],
+        possiblePlayerColors: PLAYER_COLORS
+    };
 };
 
 const configReducer = (configState, action) => {

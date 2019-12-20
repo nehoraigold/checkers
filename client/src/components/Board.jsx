@@ -1,14 +1,14 @@
 //region imports
 import React from "react";
 import Space from "./Space";
-import { BOARD_ROW_0_OFFSET, PLAYER_1_COLOR, PLAYER_2_COLOR } from "../utils/constants";
+import { BOARD_ROW_0_OFFSET, SPACE_COLORS } from "../utils/constants";
 
 //endregion
 
 const Board = () => {
     const NUMBER_OF_ROWS = 8;
     const NUMBER_OF_COLUMNS = 8;
-    const colors = [PLAYER_1_COLOR, PLAYER_2_COLOR];
+    const colors = SPACE_COLORS.slice(0, 2);
     if (BOARD_ROW_0_OFFSET % 2 === 0) {
         colors.reverse();
     }
@@ -29,12 +29,12 @@ const Board = () => {
 
     return (
         <div className="board">
-            {spaces.map((row, rowNumber) =>
-                <div key={rowNumber} className="row">
-                    {row.map((spaceColor, spaceNumber) =>
-                        <Space key={spaceNumber}
+            {spaces.map((row, y) =>
+                <div key={y} className="row">
+                    {row.map((spaceColor, x) =>
+                        <Space key={x}
                                color={spaceColor}
-                               coordinate={[spaceNumber, rowNumber]}/> )}
+                               coordinate={[x, y]}/> )}
                 </div>)}
         </div>
     );

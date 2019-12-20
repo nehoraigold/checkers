@@ -1,11 +1,7 @@
 //region imports
-import { CHOOSE_SPACE, CHOOSE_CHECKER, RESTART_GAME, CHANGE_CONFIG } from "../../utils/constants";
-import { PLAYER_1_COLOR, PLAYER_2_COLOR } from "../../utils/constants";
+import { CHOOSE_SPACE, CHOOSE_CHECKER, RESTART_GAME, PLAYER_ONE, PLAYER_TWO } from "../../utils/constants";
 import {
-    getInitialBoardState,
-    isValidMove,
-    isCheckerAtEnd,
-    isJumpPossible,
+    getInitialBoardState, isValidMove, isCheckerAtEnd, isJumpPossible,
     getCheckerCoordinatesAbleToJump, getWinner, setMovableCheckers
 } from "../../utils/gameutils"
 
@@ -16,12 +12,12 @@ export const getInitialGameState = () => {
         turnNumber: 1,
         winner: null,
         boardState: getInitialBoardState(),
-        currentPlayer: PLAYER_1_COLOR,
+        currentPlayer: PLAYER_ONE,
         chosenCheckerCoordinate: null,
         coordinateRestrictions: [],
         score: {
-            [PLAYER_1_COLOR]: 0,
-            [PLAYER_2_COLOR]: 0
+            [PLAYER_ONE]: 0,
+            [PLAYER_TWO]: 0
         }
     };
 };
@@ -61,7 +57,7 @@ const chooseSpaceReducer = ({ gameState, configs }, action) => {
 const handleTurnChange = ({ gameState, configs }, action, isValid) => {
     let boardState = Array.from(gameState.boardState)
         .map(row => row.map(checker =>
-            checker === null ? null : { color: checker.color, isKing: checker.isKing, isMovable: false }));
+            checker === null ? null : { player: checker.player, isKing: checker.isKing, isMovable: false }));
 
     const checker = Object.assign({}, boardState[gameState.chosenCheckerCoordinate[1]][gameState.chosenCheckerCoordinate[0]]);
     if (isCheckerAtEnd(action.coordinate, gameState.currentPlayer)) {
@@ -88,7 +84,7 @@ const handleTurnChange = ({ gameState, configs }, action, isValid) => {
     }
 
     if (incrementTurn) {
-        nextPlayer = gameState.currentPlayer === PLAYER_1_COLOR ? PLAYER_2_COLOR : PLAYER_1_COLOR;
+        nextPlayer = gameState.currentPlayer === PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE;
         coordinateRestrictions = getCheckerCoordinatesAbleToJump(boardState, nextPlayer);
         chosenCheckerCoordinate = coordinateRestrictions.length === 0 ? null : Array.from(coordinateRestrictions[0]);
         turnNumber++;

@@ -1,22 +1,25 @@
 //region imports
 import React from "react";
 import "../style/GameStatus.css";
-import Checker from "./checker";
+import Checker from "./Checker";
 import { connect } from "react-redux";
 import { changeConfig, restartGame } from "../store/actions";
-import { PLAYER_1_COLOR, PLAYER_2_COLOR } from "../utils/constants";
+import { PLAYER_ONE, PLAYER_TWO } from "../utils/constants";
 import { Button, Switch } from "antd";
 import "antd/dist/antd.css";
 //endregion
 
-const GameStatus = ({ score, winner, restart, restrictionsOn, toggleRestrictions }) => {
+const GameStatus = ({ score, playerColors, winner, restart, restrictionsOn, toggleRestrictions, toggleCheckerColor }) => {
     const changeRestrictions = () => toggleRestrictions(restrictionsOn);
+    const changeCheckerColor = (player) => toggleCheckerColor(player);
     return (
         <div className="game-status">
             <h3>Checkers</h3>
             <div className="score-box">
-                <div className="score"><Checker isToken={true} color={PLAYER_1_COLOR}/> {score[PLAYER_1_COLOR]}</div>
-                <div className="score"><Checker isToken={true} color={PLAYER_2_COLOR}/> {score[PLAYER_2_COLOR]}</div>
+                {[PLAYER_ONE, PLAYER_TWO].map(player =>
+                <div className="score" key={player}>
+                    <Checker isToken={true} color={playerColors[player]}/> {score[player]}
+                </div>)}
             </div>
             <Switch checked={restrictionsOn} onClick={changeRestrictions}/>
             <Button className="restart-button" type="primary" onClick={restart}>
@@ -30,6 +33,7 @@ const mapStateToProps = ({ gameState, configs }) => {
     return {
         score: gameState.score,
         winner: gameState.winner,
+        playerColors: configs.playerColors,
         restrictionsOn: configs.restricted
     };
 };
@@ -37,7 +41,10 @@ const mapStateToProps = ({ gameState, configs }) => {
 const mapDispatchToProps = dispatch => {
     return {
         restart: () => dispatch(restartGame()),
-        toggleRestrictions: (isRestricted) => dispatch(changeConfig({ restricted: !isRestricted }))
+        toggleRestrictions: (restricted) => dispatch(changeConfig({ restricted: !restricted })),
+        toggleCheckerColor: (player) => {
+
+        }
     };
 };
 

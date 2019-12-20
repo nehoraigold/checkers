@@ -4,7 +4,7 @@ import "../style/Checker.css";
 import CrownIcon from "./CrownIcon";
 import { chooseChecker } from "../store/actions"
 import { connect } from "react-redux";
-import { PLAYER_1_COLOR, PLAYER_2_COLOR } from "../utils/constants";
+import { COMPLEMENTARY_COLORS } from "../utils/constants";
 //endregion
 
 const Checker = ({ color, isKing, coordinate, chooseChecker, isSelectable, isSelected, isRestricted, isToken }) => {
@@ -21,7 +21,7 @@ const Checker = ({ color, isKing, coordinate, chooseChecker, isSelectable, isSel
                 ${isRestricted ? "restricted" : ""} 
                 ${isSelectable ? "selectable" : ""}`}
             onClick={isToken ? null : onCheckerClick}>
-            {isKing ? <CrownIcon color={color === PLAYER_1_COLOR ? PLAYER_2_COLOR : PLAYER_1_COLOR}/> : null}
+            {isKing ? <CrownIcon color={COMPLEMENTARY_COLORS[color]}/> : null}
         </div>
     );
 };
@@ -31,15 +31,15 @@ const mapStateToProps = ({ gameState, configs }, ownProps) => {
         return {};
     }
     const checker = gameState.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]];
-    const isSelected = gameState.chosenCheckerCoordinate !== null
-        && gameState.chosenCheckerCoordinate[0] === ownProps.coordinate[0]
-        && gameState.chosenCheckerCoordinate[1] === ownProps.coordinate[1];
     const isRestricted = gameState.coordinateRestrictions.some(coordinate => {
         return coordinate[0] === ownProps.coordinate[0] && coordinate[1] === ownProps.coordinate[1];
     });
     const isSelectable = configs.restricted && gameState.coordinateRestrictions.length > 0 ? isRestricted : checker.isMovable;
+    const isSelected = !isSelectable ? false : gameState.chosenCheckerCoordinate !== null
+        && gameState.chosenCheckerCoordinate[0] === ownProps.coordinate[0]
+        && gameState.chosenCheckerCoordinate[1] === ownProps.coordinate[1];
     return {
-        color: checker.color,
+        color: configs.playerColors[checker.player],
         isKing: checker.isKing,
         isSelected,
         isRestricted,

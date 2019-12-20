@@ -2,25 +2,26 @@
 import {
     NUMBER_OF_ROWS,
     NUMBER_OF_COLUMNS,
-    PLAYER_1_COLOR,
-    PLAYER_2_COLOR,
     BOARD_ROW_0_OFFSET,
-    PLAYER_1_DIRECTION, PLAYER_2_DIRECTION
+    PLAYER_1_DIRECTION,
+    PLAYER_2_DIRECTION,
+    PLAYER_ONE,
+    PLAYER_TWO
 } from "./constants";
 
 //endregion
 
 //region exported functions
 export function getInitialBoardState() {
-    const createRow = (color, offset) =>
+    const createRow = (player, offset) =>
         Array(NUMBER_OF_COLUMNS)
             .fill(undefined)
-            .map((el, i) => color === null ? null :
-                (i + BOARD_ROW_0_OFFSET + offset) % 2 === 0 ? createDefaultChecker(color) : null);
+            .map((el, i) => player === null ? null :
+                (i + BOARD_ROW_0_OFFSET + offset) % 2 === 0 ? createDefaultChecker(player) : null);
     const initialBoard = Array(NUMBER_OF_ROWS)
         .fill(undefined)
-        .map((el, i) => createRow(i < 3 ? PLAYER_1_COLOR : i > 4 ? PLAYER_2_COLOR : null, i));
-    return setMovableCheckers(initialBoard, PLAYER_1_COLOR);
+        .map((el, i) => createRow(i < 3 ? PLAYER_ONE : i > 4 ? PLAYER_TWO : null, i));
+    return setMovableCheckers(initialBoard, PLAYER_ONE);
 }
 
 export function isValidMove(checkerCoordinate, spaceCoordinate, board, player, hasRestrictions) {
@@ -45,7 +46,7 @@ export function isValidMove(checkerCoordinate, spaceCoordinate, board, player, h
 }
 
 export function isCheckerAtEnd(checkerCoordinate, player) {
-    return checkerCoordinate[1] === (player === PLAYER_1_COLOR ? NUMBER_OF_ROWS - 1 : 0);
+    return checkerCoordinate[1] === (player === PLAYER_ONE ? NUMBER_OF_ROWS - 1 : 0);
 }
 
 export function isJumpPossible(checkerCoordinate, board, player) {
@@ -63,7 +64,7 @@ export function getCheckerCoordinatesAbleToJump(board, player) {
     const checkersAbleToJump = [];
     board.forEach((row, y) => {
         row.forEach((checker, x) => {
-            if (checker !== null && checker.color === player &&
+            if (checker !== null && checker.player === player &&
                 isJumpPossible([x, y], board, player)) {
                 checkersAbleToJump.push([x, y]);
             }
@@ -73,25 +74,25 @@ export function getCheckerCoordinatesAbleToJump(board, player) {
 }
 
 export function getWinner(board) {
-    const stillAlive = { [PLAYER_1_COLOR]: false, [PLAYER_2_COLOR]: false };
+    const stillAlive = { [PLAYER_ONE]: false, [PLAYER_TWO]: false };
     for (let i = 0; i < NUMBER_OF_ROWS; i++) {
         for (let j = 0; j < NUMBER_OF_COLUMNS; j++) {
             const checker = board[j][i];
             if (checker !== null) {
-                stillAlive[checker.color] = true;
-                if (stillAlive[PLAYER_1_COLOR] && stillAlive[PLAYER_2_COLOR]) {
+                stillAlive[checker.player] = true;
+                if (stillAlive[PLAYER_ONE] && stillAlive[PLAYER_TWO]) {
                     return null;
                 }
             }
         }
     }
-    return stillAlive[PLAYER_1_COLOR] ? PLAYER_1_COLOR : PLAYER_2_COLOR;
+    return stillAlive[PLAYER_ONE] ? PLAYER_ONE : PLAYER_TWO;
 }
 
 export function setMovableCheckers(board, currentPlayer) {
     board.forEach((row, y) => {
         row.forEach((checker, x) => {
-            if (checker && checker.color === currentPlayer && isCheckerMovable([x, y], board)) {
+            if (checker && checker.player === currentPlayer && isCheckerMovable([x, y], board)) {
                 checker.isMovable = true;
             }
         });
@@ -103,13 +104,13 @@ export function setMovableCheckers(board, currentPlayer) {
 
 //region private functions
 function isCheckerMovable(coordinate, board) {
-    const player = board[coordinate[1]][coordinate[0]].color;
+    const player = board[coordinate[1]][coordinate[0]].player;
     const potentialMoveSpaces = getAllImmediateMoveSpaces(coordinate).concat(getPossibleJumpSpaces(coordinate));
     return potentialMoveSpaces.some(space => isValidMove(coordinate, space, board, player, false));
 }
 
-function createDefaultChecker(color) {
-    return { color, isKing: false, isMovable: false };
+function createDefaultChecker(player) {
+    return { player, isKing: false, isMovable: false };
 }
 
 function isCheckerKing(checkerCoordinate, board) {
@@ -121,7 +122,7 @@ function isForwardMove(checkerCoordinate, spaceCoordinate, direction) {
 }
 
 function getPlayerDirection(player) {
-    return player === PLAYER_1_COLOR ? PLAYER_1_DIRECTION : PLAYER_2_DIRECTION;
+    return player === PLAYER_ONE ? PLAYER_1_DIRECTION : PLAYER_2_DIRECTION;
 }
 
 function getPossibleJumpSpaces(coordinate) {
@@ -151,14 +152,14 @@ function isInImmediateVicinity(checkerCoordinate, spaceCoordinate) {
         && (spaceCoordinate[1] === y + 1 || spaceCoordinate[1] === y - 1);
 }
 
-function skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, playerColor) {
+function skipsOverEnemyChecker(checkerCoordinate, spaceCoordinate, board, player) {
     const skippedCheckerX = checkerCoordinate[0] + (spaceCoordinate[0] - checkerCoordinate[0]) / 2;
     const skippedCheckerY = checkerCoordinate[1] + (spaceCoordinate[1] - checkerCoordinate[1]) / 2;
     if (skippedCheckerX % 1 !== 0 || skippedCheckerY % 1 !== 0) {
         return [];
     }
     const skippedChecker = board[skippedCheckerY][skippedCheckerX];
-    if (skippedChecker && skippedChecker.color !== playerColor) {
+    if (skippedChecker && skippedChecker.player !== player) {
         return [skippedCheckerX, skippedCheckerY];
     }
     return [];
