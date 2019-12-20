@@ -2,7 +2,7 @@
 import React from "react";
 import "../style/Checker.css";
 import CrownIcon from "./CrownIcon";
-import { chooseChecker } from "../store/action"
+import { chooseChecker } from "../store/actions"
 import { connect } from "react-redux";
 import { PLAYER_1_COLOR, PLAYER_2_COLOR } from "../utils/constants";
 //endregion
@@ -26,18 +26,18 @@ const Checker = ({ color, isKing, coordinate, chooseChecker, isSelectable, isSel
     );
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = ({ gameState }, ownProps) => {
     if (ownProps.isToken) {
         return {};
     }
-    const checker = state.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]];
-    const isSelected = state.chosenCheckerCoordinate !== null
-        && state.chosenCheckerCoordinate[0] === ownProps.coordinate[0]
-        && state.chosenCheckerCoordinate[1] === ownProps.coordinate[1];
-    const isRestricted = state.coordinateRestrictions.some(coordinate => {
+    const checker = gameState.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]];
+    const isSelected = gameState.chosenCheckerCoordinate !== null
+        && gameState.chosenCheckerCoordinate[0] === ownProps.coordinate[0]
+        && gameState.chosenCheckerCoordinate[1] === ownProps.coordinate[1];
+    const isRestricted = gameState.coordinateRestrictions.some(coordinate => {
         return coordinate[0] === ownProps.coordinate[0] && coordinate[1] === ownProps.coordinate[1];
     });
-    const isSelectable = state.coordinateRestrictions.length > 0 ? isRestricted : checker.isMovable;
+    const isSelectable = gameState.coordinateRestrictions.length > 0 ? isRestricted : checker.isMovable;
     return {
         color: checker.color,
         isKing: checker.isKing,

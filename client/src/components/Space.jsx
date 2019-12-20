@@ -3,7 +3,7 @@ import React from "react";
 import "../style/Space.css";
 import Checker from "./Checker";
 import { connect } from "react-redux";
-import { chooseSpace } from "../store/action";
+import { chooseSpace } from "../store/actions";
 //endregion
 
 const Space = ({ color, hasChecker, coordinate, canSelectSpace, selectSpace }) => {
@@ -25,10 +25,10 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = ({ gameState }, ownProps) => {
     return {
-        canSelectSpace: state.chosenCheckerCoordinate !== null,
-        hasChecker: state.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]] !== null
+        canSelectSpace: gameState.chosenCheckerCoordinate !== null,
+        hasChecker: gameState.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]] !== null
     };
 };
 

@@ -18,18 +18,26 @@
 .checker.black {
     background-color: black;
     border-color: white;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 10%, rgba(0, 0, 0, 1) 40%, rgba(255, 255, 255, 0.3) 60%, rgba(0, 0, 0, 1) 100%);
+    background-image: radial-gradient(circle,
+        rgba(255, 255, 255, 0.2) 10%,
+        rgba(0, 0, 0, 1) 40%,
+        rgba(255, 255, 255, 0.3) 60%,
+        rgba(0, 0, 0, 1) 100%);
 }
 
 .checker.white {
     background-color: white;
     border-color: black;
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 10%, rgba(0, 0, 0, 0.3) 40%, rgba(255, 255, 255, 0.9) 60%, rgba(0, 0, 0, 0.3) 100%);
+    background-image: radial-gradient(circle,
+        rgba(255, 255, 255, 0.05) 10%,
+        rgba(0, 0, 0, 0.3) 40%,
+        rgba(255, 255, 255, 0.9) 60%,
+        rgba(0, 0, 0, 0.3) 100%);
 }
 
 .checker.selectable {
     cursor: pointer;
-    border: 5px solid yellow;
+    box-shadow: 0 0 20px 10px rgba(255, 255, 0, 0.7);
 }
 
 .checker.selected, .checker.selected.restricted {
@@ -37,7 +45,7 @@
 }
 
 .checker.restricted {
-    border: 3px solid red;
+    /*border: 3px solid red;*/
 }
 
 .checker.token {
@@ -57,9 +65,9 @@
 
 @keyframes pulseOuter {
     from {
-        box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 10px 10px rgba(0, 255, 200, 0.8);
     }
     to {
-        box-shadow: 0 0 5px 5px rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 5px 5px rgba(0, 255, 200, 0.4);
     }
 }

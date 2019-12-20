@@ -1,6 +1,6 @@
 //region imports
 import { createStore } from "redux";
-import rootReducer from "../store/reducer";
+import rootReducer from "./reducers/rootReducer";
 
 //endregion
 

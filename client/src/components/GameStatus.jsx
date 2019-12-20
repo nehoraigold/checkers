@@ -3,7 +3,7 @@ import React from "react";
 import "../style/GameStatus.css";
 import Checker from "./checker";
 import { connect } from "react-redux";
-import { restartGame } from "../store/action";
+import { restartGame } from "../store/actions";
 import { PLAYER_1_COLOR, PLAYER_2_COLOR } from "../utils/constants";
 import { Button } from "antd";
 import "antd/dist/antd.css";
@@ -26,8 +26,8 @@ const GameStatus = ({ score, winner, restart }) => {
 
 const mapStateToProps = state => {
     return {
-        score: state.score,
-        winner: state.winner
+        score: state.gameState.score,
+        winner: state.gameState.winner
     };
 };
 
