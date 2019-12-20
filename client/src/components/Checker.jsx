@@ -7,10 +7,10 @@ import { connect } from "react-redux";
 import { COMPLEMENTARY_COLORS } from "../utils/constants";
 //endregion
 
-const Checker = ({ color, isKing, coordinate, chooseChecker, isSelectable, isSelected, isRestricted, isToken }) => {
+const Checker = ({ color, isKing, chooseChecker, isSelectable, isSelected, isRestricted, isToken }) => {
     const onCheckerClick = () => {
         if (isSelectable) {
-            chooseChecker(coordinate);
+            chooseChecker();
         }
     };
     return (
@@ -47,9 +47,9 @@ const mapStateToProps = ({ gameState, configs }, ownProps) => {
     }
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        chooseChecker: coordinate => dispatch(chooseChecker(coordinate))
+        chooseChecker: () => dispatch(chooseChecker(ownProps.coordinate))
     }
 };
 
