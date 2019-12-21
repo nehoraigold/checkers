@@ -4,7 +4,7 @@ import { CHANGE_CONFIG, CHANGE_PLAYER_COLOR } from "../../utils/constants";
 
 export const getInitialConfigState = () => {
     return {
-        restricted: true,
+        forceJump: true,
         playerColors: ["white", "black"],
     };
 };

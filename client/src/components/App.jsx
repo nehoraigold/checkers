@@ -8,8 +8,13 @@ import GameStatus from "./GameStatus"
 
 const App = () =>
     <div className="app">
-        <GameStatus/>
-        <Board/>
+        <div>
+            <h1 style={{fontSize: "30px"}}>Checkers</h1>
+        </div>
+        <div className="main">
+            <GameStatus/>
+            <Board/>
+        </div>
     </div>;
 
 export default App;

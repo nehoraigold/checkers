@@ -1,5 +1,6 @@
 //region imports
 import React from "react";
+import "../style/Board.css";
 import Space from "./Space";
 import { BOARD_ROW_0_OFFSET, SPACE_COLORS } from "../utils/constants";
 
@@ -28,14 +29,16 @@ const Board = () => {
     }
 
     return (
-        <div className="board">
-            {spaces.map((row, y) =>
-                <div key={y} className="row">
-                    {row.map((spaceColor, x) =>
-                        <Space key={x}
-                               color={spaceColor}
-                               coordinate={[x, y]}/> )}
-                </div>)}
+        <div className="board-border">
+            <div className="board">
+                {spaces.map((row, y) =>
+                    <div key={y} className="row">
+                        {row.map((spaceColor, x) =>
+                            <Space key={x}
+                                   color={spaceColor}
+                                   coordinate={[x, y]}/>)}
+                    </div>)}
+            </div>
         </div>
     );
 };

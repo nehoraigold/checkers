@@ -14,7 +14,7 @@ export const getInitialGameState = () => {
         boardState: getInitialBoardState(),
         currentPlayer: PLAYER_ONE,
         chosenCheckerCoordinate: null,
-        coordinateRestrictions: [],
+        forceJumpCheckerCoordinates: [],
         score: {
             [PLAYER_ONE]: 0,
             [PLAYER_TWO]: 0
@@ -47,7 +47,7 @@ const chooseSpaceReducer = ({ gameState, configs }, action) => {
         action.coordinate,
         gameState.boardState,
         gameState.currentPlayer,
-        configs.restricted && gameState.coordinateRestrictions.length > 0);
+        configs.forceJump && gameState.forceJumpCheckerCoordinates.length > 0);
     if (isValid === false) {
         return gameState;
     }
@@ -68,7 +68,7 @@ const handleTurnChange = ({ gameState, configs }, action, isValid) => {
 
     let incrementTurn = true;
     let nextPlayer = gameState.currentPlayer;
-    let coordinateRestrictions = [];
+    let forceJumpCheckerCoordinates = [];
     let chosenCheckerCoordinate = action.coordinate;
     let turnNumber = gameState.turnNumber;
     let score = Object.assign({}, gameState.score);
@@ -79,14 +79,14 @@ const handleTurnChange = ({ gameState, configs }, action, isValid) => {
         score[gameState.currentPlayer] += points;
         incrementTurn = !isJumpPossible(action.coordinate, boardState, gameState.currentPlayer);
         if (!incrementTurn) {
-            coordinateRestrictions = [action.coordinate];
+            forceJumpCheckerCoordinates = [action.coordinate];
         }
     }
 
     if (incrementTurn) {
         nextPlayer = gameState.currentPlayer === PLAYER_ONE ? PLAYER_TWO : PLAYER_ONE;
-        coordinateRestrictions = getCheckerCoordinatesAbleToJump(boardState, nextPlayer);
-        chosenCheckerCoordinate = coordinateRestrictions.length === 0 ? null : Array.from(coordinateRestrictions[0]);
+        forceJumpCheckerCoordinates = getCheckerCoordinatesAbleToJump(boardState, nextPlayer);
+        chosenCheckerCoordinate = forceJumpCheckerCoordinates.length === 0 ? null : Array.from(forceJumpCheckerCoordinates[0]);
         turnNumber++;
     }
     setMovableCheckers(boardState, nextPlayer);
@@ -95,7 +95,7 @@ const handleTurnChange = ({ gameState, configs }, action, isValid) => {
         currentPlayer: nextPlayer,
         turnNumber,
         chosenCheckerCoordinate,
-        coordinateRestrictions,
+        forceJumpCheckerCoordinates,
         boardState,
         score,
         winner

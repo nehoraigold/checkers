@@ -14,7 +14,6 @@ const GameStatus = ({ score, playerColors, winner, restart, restrictionsOn, togg
     const onCheckerColorChange = (player, color) => changeCheckerColor(player, color);
     return (
         <div className="game-status">
-            <h3>Checkers</h3>
             <div className="score-box">
                 {[PLAYER_ONE, PLAYER_TWO].map(player =>
                 <div className="score" key={player}>
@@ -39,14 +38,14 @@ const mapStateToProps = ({ gameState, configs }) => {
         score: gameState.score,
         winner: gameState.winner,
         playerColors: configs.playerColors,
-        restrictionsOn: configs.restricted
+        restrictionsOn: configs.forceJump
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         restart: () => dispatch(restartGame()),
-        toggleRestrictions: (restricted) => dispatch(changeConfig({ restricted: !restricted })),
+        toggleRestrictions: (restricted) => dispatch(changeConfig({ forceJump: !restricted })),
         changeCheckerColor: (player, color) => dispatch(changePlayerColor(player, color))
     };
 };
