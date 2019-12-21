@@ -1,3 +1,6 @@
 .board {
-
+    display: inline-block;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid black;
 }
