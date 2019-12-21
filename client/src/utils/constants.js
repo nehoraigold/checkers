@@ -1,7 +1,7 @@
 //region actions
 export const CHOOSE_CHECKER = "CHOOSE_CHECKER";
 export const CHOOSE_SPACE = "CHOOSE_SPACE";
-export const CHANGE_CONFIG = "CHANGE_CONFIG";
+export const TOGGLE_FORCE_JUMP = "TOGGLE_FORCE_JUMP";
 export const CHANGE_PLAYER_COLOR = "CHANGE_PLAYER_COLOR";
 export const SKIP_TURN = "SKIP_TURN";
 export const RESTART_GAME = "RESTART_GAME";

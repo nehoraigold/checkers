@@ -1,5 +1,5 @@
 //region imports
-import { CHANGE_CONFIG, CHANGE_PLAYER_COLOR } from "../../utils/constants";
+import { TOGGLE_FORCE_JUMP, CHANGE_PLAYER_COLOR } from "../../utils/constants";
 //endregion
 
 export const getInitialConfigState = () => {
@@ -11,8 +11,8 @@ export const getInitialConfigState = () => {
 
 const configReducer = (configState, action) => {
     switch (action.type) {
-        case CHANGE_CONFIG:
-            return Object.assign({}, configState, action.config);
+        case TOGGLE_FORCE_JUMP:
+            return Object.assign({}, configState, { forceJump: !configState.forceJump });
         case CHANGE_PLAYER_COLOR:
             return handlePlayerColorChange(configState, action);
         default:

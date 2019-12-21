@@ -7,12 +7,7 @@ import { chooseSpace } from "../store/actions";
 //endregion
 
 const Space = ({ color, hasChecker, coordinate, canSelectSpace, selectSpace }) => {
-    const onSpaceClick = () => {
-        if (canSelectSpace) {
-            selectSpace(coordinate);
-        }
-    };
-
+    const onSpaceClick = () => canSelectSpace ? selectSpace(coordinate) : null;
     return (
         <div className={`space ${color} ${canSelectSpace ? "selectable" : ""}`} onClick={onSpaceClick}>
             {hasChecker ? <Checker coordinate={coordinate}/> : null}
@@ -27,7 +22,8 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = ({ gameState }, ownProps) => {
     return {
-        canSelectSpace: gameState.chosenCheckerCoordinate !== null, //TODO: Make this more sophisticated
+        canSelectSpace: gameState.possibleMoveCoordinates.some(coordinate =>
+            coordinate[0] === ownProps.coordinate[0] && coordinate[1] === ownProps.coordinate[1]),
         hasChecker: gameState.boardState[ownProps.coordinate[1]][ownProps.coordinate[0]] !== null
     };
 };

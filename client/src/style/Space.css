@@ -17,6 +17,9 @@
 
 .space.selectable {
     cursor: pointer;
+    background-color: rgba(0, 0, 100, 0.5);
+    box-sizing: border-box;
+    border: 2px solid aqua;
 }
 
 .space.red {

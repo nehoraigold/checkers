@@ -1,8 +1,15 @@
 //region imports
-import { CHOOSE_SPACE, CHOOSE_CHECKER, RESTART_GAME, PLAYER_ONE, PLAYER_TWO } from "../../utils/constants";
+import {
+    CHOOSE_SPACE,
+    CHOOSE_CHECKER,
+    RESTART_GAME,
+    PLAYER_ONE,
+    PLAYER_TWO,
+    TOGGLE_FORCE_JUMP
+} from "../../utils/constants";
 import {
     getInitialBoardState, isValidMove, isCheckerAtEnd, isJumpPossible,
-    getCheckerCoordinatesAbleToJump, getWinner, setMovableCheckers
+    getCheckerCoordinatesAbleToJump, getWinner, setMovableCheckers, getAllPossibleMoves
 } from "../../utils/gameutils"
 
 //endregion
@@ -15,6 +22,7 @@ export const getInitialGameState = () => {
         currentPlayer: PLAYER_ONE,
         chosenCheckerCoordinate: null,
         forceJumpCheckerCoordinates: [],
+        possibleMoveCoordinates: [],
         score: {
             [PLAYER_ONE]: 0,
             [PLAYER_TWO]: 0
@@ -27,7 +35,9 @@ export const gameReducer = ({ gameState, configs }, action) => {
         case CHOOSE_SPACE:
             return chooseSpaceReducer({ gameState, configs }, action);
         case CHOOSE_CHECKER:
-            return chooseCheckerReducer(gameState, action);
+            return chooseCheckerReducer({ gameState, configs }, action);
+        case TOGGLE_FORCE_JUMP:
+            return toggleForceJumpReducer({ gameState, configs });
         case RESTART_GAME:
             return Object.assign({}, getInitialGameState(), { boardState: getInitialBoardState() });
         default:
@@ -35,9 +45,26 @@ export const gameReducer = ({ gameState, configs }, action) => {
     }
 };
 
-const chooseCheckerReducer = (gameState, action) => {
+const toggleForceJumpReducer = ({ gameState, configs }) => {
+    const { chosenCheckerCoordinate, boardState, forceJumpCheckerCoordinates, currentPlayer } = gameState;
+    const forceJump = !configs.forceJump; // toggled
+    const forceJumpPossible = forceJumpCheckerCoordinates.length > 0;
+    if (chosenCheckerCoordinate === null || !forceJumpPossible) {
+        return gameState;
+    }
+    let newCheckerCoordinate = chosenCheckerCoordinate;
+    if (forceJump) {
+        newCheckerCoordinate = isJumpPossible(chosenCheckerCoordinate, boardState, currentPlayer) ? chosenCheckerCoordinate : null;
+    }
+    const possibleMoveCoordinates = newCheckerCoordinate ? getAllPossibleMoves(newCheckerCoordinate, boardState, forceJump && forceJumpPossible) : [];
+    return Object.assign({}, gameState, { chosenCheckerCoordinate: newCheckerCoordinate, possibleMoveCoordinates });
+};
+
+const chooseCheckerReducer = ({ gameState, configs }, action) => {
+    const forceJump = forceJumpRelevant(gameState, configs);
     return Object.assign({}, gameState, {
-        chosenCheckerCoordinate: action.coordinate
+        chosenCheckerCoordinate: action.coordinate,
+        possibleMoveCoordinates: getAllPossibleMoves(action.coordinate, gameState.boardState, forceJump)
     });
 };
 
@@ -47,7 +74,7 @@ const chooseSpaceReducer = ({ gameState, configs }, action) => {
         action.coordinate,
         gameState.boardState,
         gameState.currentPlayer,
-        configs.forceJump && gameState.forceJumpCheckerCoordinates.length > 0);
+        forceJumpRelevant(gameState, configs));
     if (isValid === false) {
         return gameState;
     }
@@ -90,16 +117,22 @@ const handleTurnChange = ({ gameState, configs }, action, isValid) => {
         turnNumber++;
     }
     setMovableCheckers(boardState, nextPlayer);
+    const possibleMoveCoordinates = chosenCheckerCoordinate === null ? [] : getAllPossibleMoves(chosenCheckerCoordinate, boardState, configs.forceJump);
     const winner = getWinner(boardState);
     return Object.assign({}, gameState, {
         currentPlayer: nextPlayer,
         turnNumber,
         chosenCheckerCoordinate,
         forceJumpCheckerCoordinates,
+        possibleMoveCoordinates,
         boardState,
         score,
         winner
     });
 };
+
+const forceJumpRelevant = (gameState, configs) => {
+    return configs.forceJump && gameState.forceJumpCheckerCoordinates.length > 0;
+}
 
 export default gameReducer;

@@ -1,6 +1,6 @@
 //region imports
 import {
-    CHANGE_CONFIG,
+    TOGGLE_FORCE_JUMP,
     CHOOSE_CHECKER,
     CHOOSE_SPACE,
     SKIP_TURN,
@@ -17,8 +17,8 @@ export const chooseSpace = (coordinate) => {
     return { type: CHOOSE_SPACE, coordinate };
 };
 
-export const changeConfig = (config) => {
-    return { type: CHANGE_CONFIG, config };
+export const toggleForceJump = () => {
+    return { type: TOGGLE_FORCE_JUMP };
 };
 
 export const changePlayerColor = (player, newColor) => {

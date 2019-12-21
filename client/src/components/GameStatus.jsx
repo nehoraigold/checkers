@@ -2,7 +2,7 @@
 import React from "react";
 import "../style/GameStatus.css";
 import { connect } from "react-redux";
-import { changeConfig, restartGame, changePlayerColor } from "../store/actions";
+import { toggleForceJump, restartGame, changePlayerColor } from "../store/actions";
 import { PLAYER_ONE, PLAYER_TWO, ALL_PLAYER_COLORS } from "../utils/constants";
 import { Button, Switch, Select } from "antd";
 const { Option } = Select;
@@ -45,7 +45,7 @@ const mapStateToProps = ({ gameState, configs }) => {
 const mapDispatchToProps = dispatch => {
     return {
         restart: () => dispatch(restartGame()),
-        toggleRestrictions: (restricted) => dispatch(changeConfig({ forceJump: !restricted })),
+        toggleRestrictions: (restricted) => dispatch(toggleForceJump()),
         changeCheckerColor: (player, color) => dispatch(changePlayerColor(player, color))
     };
 };

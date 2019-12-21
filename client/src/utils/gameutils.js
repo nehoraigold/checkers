@@ -100,6 +100,19 @@ export function setMovableCheckers(board, currentPlayer) {
     return board;
 }
 
+export function getAllPossibleMoves(checkerCoordinate, board, forceJump) {
+    const player = board[checkerCoordinate[1]][checkerCoordinate[0]].player;
+    const allPossibleMoves = [];
+    getPossibleJumpSpaces(checkerCoordinate)
+        .concat(getAllImmediateMoveSpaces(checkerCoordinate))
+        .forEach(moveCoordinate => {
+            if (isValidMove(checkerCoordinate, moveCoordinate, board, player, forceJump)) {
+                allPossibleMoves.push(moveCoordinate);
+            }
+        });
+    console.log("all possible moves for", checkerCoordinate, "with forcejump?", forceJump, allPossibleMoves);
+    return allPossibleMoves;
+}
 //endregion
 
 //region private functions
