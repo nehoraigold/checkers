@@ -65,7 +65,7 @@
     max-width: 3vw;
     max-height: 3vw;
     position: static;
-    border: 0;
+    border: 1px solid black;
     top: 0;
     left: 0;
     transform: translate(0, 0);

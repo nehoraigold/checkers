@@ -6,6 +6,11 @@
     line-height: 2em;
 }
 
+.game-status .color-dropdown > div {
+    border: 0;
+    background: transparent;
+}
+
 .game-status h3 {
     line-height: 1;
     margin-block-start: 10px;

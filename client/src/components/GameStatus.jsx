@@ -7,6 +7,7 @@ import { PLAYER_ONE, PLAYER_TWO, ALL_PLAYER_COLORS } from "../utils/constants";
 import { Button, Switch, Select } from "antd";
 const { Option } = Select;
 import "antd/dist/antd.css";
+import Checker from "./Checker";
 //endregion
 
 const GameStatus = ({ score, playerColors, winner, restart, restrictionsOn, toggleRestrictions, changeCheckerColor }) => {
@@ -17,10 +18,16 @@ const GameStatus = ({ score, playerColors, winner, restart, restrictionsOn, togg
             <div className="score-box">
                 {[PLAYER_ONE, PLAYER_TWO].map(player =>
                 <div className="score" key={player}>
-                    <Select defaultValue={playerColors[player]} onChange={color => onCheckerColorChange(player, color)}>
+                    <Select defaultValue={playerColors[player]}
+                            onChange={color => onCheckerColorChange(player, color)}
+                            showArrow={false}
+                            size={"large"}
+                            className={"color-dropdown"}
+                    >
                         {ALL_PLAYER_COLORS.map(color =>
-                            <Option key={color} value={color} disabled={playerColors.some(playerColor => color === playerColor)}>
-                                {color}
+                            <Option key={color} value={color}
+                                    disabled={playerColors.some(playerColor => color === playerColor)}>
+                                <Checker isToken={true} color={color}/>
                             </Option>)}
                     </Select> {score[player]}
                 </div>)}
