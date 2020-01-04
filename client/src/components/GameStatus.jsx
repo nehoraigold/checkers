@@ -32,10 +32,14 @@ const GameStatus = ({ score, playerColors, winner, restart, restrictionsOn, togg
                     </Select> {score[player]}
                 </div>)}
             </div>
-            <Switch checked={restrictionsOn} onClick={changeRestrictions}/>
-            <Button className="restart-button" type="primary" onClick={restart}>
-                <b>{winner ? "Play Again" : "Restart"}</b>
-            </Button>
+            <div className="options-box">
+                <div className="forcejump-box">
+                    Force Jump <Switch checked={restrictionsOn} onClick={changeRestrictions}/>
+                </div>
+                <Button className="restart-button" type="primary" onClick={restart}>
+                    <b>{winner ? "Play Again" : "Restart"}</b>
+                </Button>
+            </div>
         </div>
     );
 };

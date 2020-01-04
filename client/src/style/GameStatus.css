@@ -4,17 +4,25 @@
     box-sizing: border-box;
     margin: 1vw;
     line-height: 2em;
+    text-align: right;
 }
 
-.game-status .color-dropdown > div {
+.game-status .color-dropdown, .game-status .color-dropdown > div {
     border: 0;
     background: transparent;
+    border-radius: 50%;
+    height: 6vh;
+    vertical-align: middle;
 }
 
 .game-status h3 {
     line-height: 1;
     margin-block-start: 10px;
     margin-block-end: 5px;
+}
+
+.game-status .color-dropdown:focus {
+    outline: none;
 }
 
 .game-status .score-box {
@@ -31,7 +39,20 @@
     margin: 5px;
 }
 
+.game-status .options-box {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.game-status .options-box .forcejump-box {
+    font-size: 20px;
+}
+
 .game-status .restart-button {
     background-color: black;
     border-color: white;
+    font-weight: lighter;
+    margin: 10px;
+    font-size: 20px;
 }

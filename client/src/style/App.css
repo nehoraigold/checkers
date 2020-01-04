@@ -1,7 +1,13 @@
 .app {
-    font-family: sans-serif;
+    font-family: Calistoga, sans-serif;
     font-size: 0;
     text-align: center;
     margin: 0;
     padding: 0;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: calc(50% - 41vh) 82vh calc(50% - 41vh);
+    grid-template-rows: auto;
 }

@@ -110,7 +110,6 @@ export function getAllPossibleMoves(checkerCoordinate, board, forceJump) {
                 allPossibleMoves.push(moveCoordinate);
             }
         });
-    console.log("all possible moves for", checkerCoordinate, "with forcejump?", forceJump, allPossibleMoves);
     return allPossibleMoves;
 }
 //endregion

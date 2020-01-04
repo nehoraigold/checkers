@@ -14,6 +14,7 @@ const App = () =>
         <div className="main">
             <GameStatus/>
             <Board/>
+            <div/>
         </div>
     </div>;
 
