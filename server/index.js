@@ -7,6 +7,7 @@ const configs = require('../configs.json');
 //endregion
 
 function main() {
+    const PORT = process.env.port || configs.server.port;
     const app = express();
     app.use(bodyParser.json());
     app.use(express.static(path.join(__dirname, 'dist')));
@@ -15,8 +16,8 @@ function main() {
         res.sendFile(path.join(__dirname, 'dist/index.html'));
     });
 
-    const server = app.listen(configs.server.port, () => {
-        console.log(`Server listening on port ${configs.server.port}...`)
+    const server = app.listen(PORT, () => {
+        console.log(`Server listening on port ${PORT}...`)
     });
 
     process.on('SIGINT', () => {
