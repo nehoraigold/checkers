@@ -9,7 +9,7 @@ import GameStatus from "./GameStatus"
 const App = () =>
     <div className="app">
         <div>
-            <h1 style={{fontSize: "30px"}}>Checkers</h1>
+            <h1 style={{fontSize: "40px"}}>Checkers</h1>
         </div>
         <div className="main">
             <GameStatus/>
