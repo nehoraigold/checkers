@@ -24,3 +24,9 @@ export const BOARD_ROW_0_OFFSET = 1;
 export const PLAYER_1_DIRECTION = -1;
 export const PLAYER_2_DIRECTION = 1;
 //endregion
+
+//region draggable types
+export const DRAGGABLE_ITEM_TYPE = {
+    CHECKER: "checker"
+};
+//endregion

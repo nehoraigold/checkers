@@ -1,24 +1,33 @@
 //region imports
 import React from "react";
+import { DragSource, useDrag } from "react-dnd";
 import "../style/Checker.css";
 import CrownIcon from "./CrownIcon";
 import { chooseChecker } from "../store/actions"
 import { connect } from "react-redux";
-import { COMPLEMENTARY_COLORS } from "../utils/constants";
+import { COMPLEMENTARY_COLORS, DRAGGABLE_ITEM_TYPE } from "../utils/constants";
 //endregion
 
 const Checker = ({ color, isKing, chooseChecker, isSelectable, isSelected, canJump, isToken }) => {
     const onCheckerClick = () => isSelectable ? chooseChecker() : null;
+    const [{ isDragging }, drag] = useDrag({
+        item: { type: DRAGGABLE_ITEM_TYPE.CHECKER },
+        collect: monitor => !!monitor.isDragging(),
+        begin: onCheckerClick
+    });
+
     return (
-        <div
-            className={`checker ${color} 
-            ${isToken ? "token" : ""}
-            ${isSelected ? "selected" : ""}
-            ${canJump ? "forceJump" : ""}
-            ${isSelectable ? "selectable" : ""}`}
-            onClick={isToken ? null : onCheckerClick}>
+        <div ref={drag}
+             className={`checker ${color} 
+                    ${isToken ? "token" : ""}
+                    ${isSelected ? "selected" : ""}
+                    ${canJump ? "forceJump" : ""}
+                    ${isSelectable ? "selectable" : ""}
+                    ${isDragging ? "dragging" : ""}`}
+             onClick={isToken ? null : onCheckerClick}>
             {isKing ? <CrownIcon color={COMPLEMENTARY_COLORS[color]}/> : null}
         </div>
+
     );
 };
 
@@ -48,4 +57,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Checker);
+export default DragSource(DRAGGABLE_ITEM_TYPE.CHECKER,
+    {
+        beginDrag: () => {},
+        endDrag: () => {}
+    },
+    (connect, monitor) => ({
+        isDragging: monitor.isDragging(),
+    }))(connect(mapStateToProps, mapDispatchToProps)(Checker));
